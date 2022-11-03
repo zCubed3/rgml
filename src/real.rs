@@ -1,7 +1,6 @@
-use std::ops::*;
 use std::cmp::*;
 use std::fmt::*;
-
+use std::ops::*;
 
 // https://www.worthe-it.co.za/blog/2017-01-15-aliasing-traits-in-rust.html
 

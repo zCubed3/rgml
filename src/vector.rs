@@ -1,11 +1,11 @@
 #![allow(unused)]
 #![allow(dead_code)]
 
-use crate::real::RealNumber;
-
-use std::ops::*;
 use std::cmp::*;
 use std::fmt::*;
+use std::ops::*;
+
+use crate::real::RealNumber;
 
 ///
 /// Configurable vector type for usage with Vector math
@@ -17,18 +17,18 @@ use std::fmt::*;
 #[repr(C)]
 pub struct Vector<T: RealNumber, const COUNT: usize> {
     /// The underlying array of the vector, the vector dereferences into this array
-    pub data: [T; COUNT],
+    pub underlying: [T; COUNT],
 }
 
 impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
     /// Creates a new [Vector] by copying the given array into the backing array
     pub fn from_array(array: [T; COUNT]) -> Self {
-        Vector { data: array }
+        Vector { underlying: array }
     }
 
     /// Creates a new [Vector] by copying the provided value into each element
     pub fn from_scalar(value: T) -> Self {
-        Vector { data: [value; COUNT] }
+        Vector { underlying: [value; COUNT] }
     }
 
     /// Returns the sum of all components ([Real]) within this [Vector]
@@ -53,10 +53,10 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
     }
 
     /// Returns the dot product of this [Vector] and another
-    pub fn dot(&self, rhs : Self) -> T {
+    pub fn dot(&self, rhs: Self) -> T {
         let mut d = T::default();
 
-        for c in 0 .. COUNT {
+        for c in 0..COUNT {
             d += self[c] * rhs[c];
         }
 
@@ -80,7 +80,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 //
 impl<T: RealNumber, const COUNT: usize> Default for Vector<T, COUNT> {
     fn default() -> Self {
-        Self { data: [T::default(); COUNT] }
+        Self { underlying: [T::default(); COUNT] }
     }
 }
 
@@ -92,13 +92,13 @@ impl<T: RealNumber, const COUNT: usize> Deref for Vector<T, COUNT> {
     type Target = [T; COUNT];
 
     fn deref(&self) -> &Self::Target {
-        &self.data
+        &self.underlying
     }
 }
 
 impl<T: RealNumber, const COUNT: usize> DerefMut for Vector<T, COUNT> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.data
+        &mut self.underlying
     }
 }
 
@@ -109,7 +109,7 @@ impl<T: RealNumber, const COUNT: usize> Debug for Vector<T, COUNT> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "Vector<{}, {}> {{\n", std::any::type_name::<T>(), COUNT).expect("Failed to write!");
 
-        for c in 0 .. COUNT {
+        for c in 0..COUNT {
             writeln!(f, "\t[{}] = {}", c, self[c]).expect("Failed to write!");
         }
 
@@ -124,7 +124,7 @@ impl<T: RealNumber, const COUNT: usize> Display for Vector<T, COUNT> {
         write!(f, "<").expect("Failed to write!");
 
         let mut first = true;
-        for c in self.data {
+        for c in self.underlying {
             if !first {
                 write!(f, ", ").expect("Failed to write!");
             }
@@ -233,7 +233,7 @@ impl<T: RealNumber, const COUNT: usize> Neg for Vector<T, COUNT> {
     fn neg(self) -> Self::Output {
         let mut d = self.clone();
 
-        for c in 0 .. COUNT {
+        for c in 0..COUNT {
             d[c] = -d[c];
         }
 
@@ -246,7 +246,7 @@ impl<T: RealNumber, const COUNT: usize> Neg for Vector<T, COUNT> {
 //
 impl<T: RealNumber, const COUNT: usize> PartialEq for Vector<T, COUNT> {
     fn eq(&self, other: &Self) -> bool {
-        for c in 0 .. COUNT {
+        for c in 0..COUNT {
             if self[c] != other[c] {
                 return false;
             }
@@ -283,8 +283,9 @@ macro_rules! vector_from_vector {
 
 /// Contains commonly used [Vector] aliases with additional implementations for ease of use
 pub mod common {
-    use super::*;
     use crate::real::Real;
+
+    use super::*;
 
     /// Common Vector2 types
     pub type Vector2 = Vector<Real, 2>;
@@ -315,7 +316,7 @@ pub mod common {
 
         /// Returns the cross product of the this [Vector] and another
         /// *Only implemented for 3 dimensional vectors due to cross product being 3D specific!*
-        pub fn cross(&self, rhs : Self) -> Self {
+        pub fn cross(&self, rhs: Self) -> Self {
             Self::from_array([
                 self[1] * rhs[2] - self[2] * rhs[1],
                 self[2] * rhs[0] - self[0] * rhs[2],
@@ -337,10 +338,10 @@ pub mod common {
             Self::from_array([x, y, z, w])
         }
 
-        pub fn from_w(rhs: Vector<T, 3>, w : T) -> Self {
+        pub fn from_w(rhs: Vector<T, 3>, w: T) -> Self {
             let mut o = Vector::<T, 4>::default();
 
-            for c in 0 .. 3 {
+            for c in 0..3 {
                 o[c] = rhs[c];
             }
 

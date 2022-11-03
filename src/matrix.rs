@@ -1,12 +1,12 @@
 #![allow(unused)]
 #![allow(dead_code)]
 
-use super::real::RealNumber;
-
-use std::ops::*;
 use std::cmp::*;
 use std::fmt::*;
+use std::ops::*;
+
 use crate::vector::Vector;
+use super::real::RealNumber;
 
 /// [Matrix] and [Vector] are very closely related!
 /// Because of this, [Matrix] provides behavior to work with [Vector] types!
@@ -19,12 +19,12 @@ use crate::vector::Vector;
 #[repr(C)]
 pub struct Matrix<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> {
     /// The underlying array of the matrix, the matrix dereferences into this array
-    pub data: [[T; WIDTH]; HEIGHT],
+    pub underlying: [[T; WIDTH]; HEIGHT],
 }
 
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HEIGHT> {
     pub fn from_array(array: [[T; WIDTH]; HEIGHT]) -> Self {
-        Self { data: array }
+        Self { underlying: array }
     }
 
     /// Provides an identity matrix (this works best with evenly shaped [Matrix] types!)
@@ -33,7 +33,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HE
 
         // Only diagonals are populated, therefore X and Y are the same!
         // We use WIDTH as our frame of reference
-        for c in 0 .. WIDTH {
+        for c in 0..WIDTH {
             // Depth check
             if c >= HEIGHT {
                 break;
@@ -42,7 +42,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HE
             array[c][c] = T::real_get_one();
         }
 
-        return Self { data: array };
+        return Self { underlying: array };
     }
 
     /// Transposes the given matrix
@@ -53,8 +53,8 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HE
     pub fn transpose(&self) -> Matrix<T, HEIGHT, WIDTH> {
         let mut m = Matrix::<T, HEIGHT, WIDTH>::default();
 
-        for y in 0 .. WIDTH {
-            for x in 0 .. HEIGHT {
+        for y in 0..WIDTH {
+            for x in 0..HEIGHT {
                 m[x][y] = self[y][x];
             }
         }
@@ -70,13 +70,13 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Deref for Matrix<T,
     type Target = [[T; WIDTH]; HEIGHT];
 
     fn deref(&self) -> &Self::Target {
-        &self.data
+        &self.underlying
     }
 }
 
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> DerefMut for Matrix<T, WIDTH, HEIGHT> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.data
+        &mut self.underlying
     }
 }
 
@@ -85,14 +85,14 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> DerefMut for Matrix
 //
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Display for Matrix<T, WIDTH, HEIGHT> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        for y in 0 .. HEIGHT {
+        for y in 0..HEIGHT {
             if y != 0 {
                 writeln!(f).expect("Failed to write!");
             }
 
             write!(f, "[").expect("Failed to write!");
 
-            for x in 0 .. WIDTH {
+            for x in 0..WIDTH {
                 write!(f, "{}", self[y][x]).expect("Failed to write!");
 
                 if x != WIDTH - 1 {
@@ -112,7 +112,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Display for Matrix<
 //
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Default for Matrix<T, WIDTH, HEIGHT> {
     fn default() -> Self {
-        Self { data: [[T::default(); WIDTH]; HEIGHT] }
+        Self { underlying: [[T::default(); WIDTH]; HEIGHT] }
     }
 }
 
@@ -170,12 +170,12 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Mul<Self> for Matri
     fn mul(self, rhs: Self) -> Self::Output {
         let mut m = Self::default();
 
-        for y in 0 .. HEIGHT {
+        for y in 0..HEIGHT {
             let r = Vector::from_array(self[y]);
-            for x in 0 .. WIDTH {
+            for x in 0..WIDTH {
                 let mut c = Vector::<T, WIDTH>::default();
 
-                for y2 in 0 .. HEIGHT {
+                for y2 in 0..HEIGHT {
                     c[y2] = rhs[y2][x];
                 }
 
@@ -195,9 +195,10 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Mul<Self> for Matri
 ///
 /// Implementations of Matrix inverse are from <https://github.com/g-truc/glm/blob/master/glm/detail/func_matrix.inl>
 pub mod common {
-    use crate::vector::Vector;
+    use crate::real::{Real, RealNumber};
     use crate::vector::common::{Vector3, Vector4};
-    use crate::real::{RealNumber, Real};
+    use crate::vector::Vector;
+
     use super::*;
 
     /// Default matrix 2x2 types
@@ -233,8 +234,8 @@ pub mod common {
         #[inline]
         pub fn determinant(&self) -> T {
             self[0][0] * (self[1][1] * self[2][2] - self[2][1] * self[1][2]) -
-            self[1][0] * (self[0][1] * self[2][2] - self[2][1] * self[0][2]) +
-            self[2][0] * (self[0][1] * self[1][2] - self[1][1] * self[0][2])
+                self[1][0] * (self[0][1] * self[2][2] - self[2][1] * self[0][2]) +
+                self[2][0] * (self[0][1] * self[1][2] - self[1][1] * self[0][2])
         }
 
         pub fn inverse(&self) -> Self {
@@ -262,7 +263,7 @@ pub mod common {
 
     impl<T: RealNumber> Matrix<T, 4, 4> {
         pub fn from_vectors(r0: Vector<T, 4>, r1: Vector<T, 4>, r2: Vector<T, 4>, r3: Vector<T, 4>) -> Self {
-            Self { data: [*r0, *r1, *r2, *r3] }
+            Self { underlying: [*r0, *r1, *r2, *r3] }
         }
 
         pub fn inverse(&self) -> Self {
@@ -405,7 +406,7 @@ pub mod common {
             reference[1] = point[0] * self[1][0] + point[1] * self[1][0] + point[2] * self[1][2] + self[1][3];
             reference[2] = point[0] * self[2][0] + point[1] * self[2][0] + point[2] * self[2][2] + self[2][3];
 
-            let w : T = point[0] * self[3][0] + point[1] * self[3][1] + point[2] * self[3][2] + self[3][3];
+            let w: T = point[0] * self[3][0] + point[1] * self[3][1] + point[2] * self[3][2] + self[3][3];
 
             reference[0] /= w;
             reference[1] /= w;
@@ -425,7 +426,7 @@ pub mod common {
                 rhs[0] * self[0][0] + rhs[1] * self[0][1] + rhs[2] * self[0][2] + rhs[3] * self[0][3],
                 rhs[0] * self[1][0] + rhs[1] * self[1][1] + rhs[2] * self[1][2] + rhs[3] * self[1][3],
                 rhs[0] * self[2][0] + rhs[1] * self[2][1] + rhs[2] * self[2][2] + rhs[3] * self[2][3],
-                rhs[0] * self[3][0] + rhs[1] * self[3][1] + rhs[2] * self[3][2] + rhs[3] * self[3][3]
+                rhs[0] * self[3][0] + rhs[1] * self[3][1] + rhs[2] * self[3][2] + rhs[3] * self[3][3],
             )
         }
     }
@@ -440,7 +441,7 @@ pub mod common {
                 self[0] * rhs[0][0] + self[1] * rhs[0][1] + self[2] * rhs[0][2] + self[3] * rhs[0][3],
                 self[0] * rhs[1][0] + self[1] * rhs[1][1] + self[2] * rhs[1][2] + self[3] * rhs[1][3],
                 self[0] * rhs[2][0] + self[1] * rhs[2][1] + self[2] * rhs[2][2] + self[3] * rhs[2][3],
-                self[0] * rhs[3][0] + self[1] * rhs[3][1] + self[2] * rhs[3][2] + self[3] * rhs[3][3]
+                self[0] * rhs[3][0] + self[1] * rhs[3][1] + self[2] * rhs[3][2] + self[3] * rhs[3][3],
             )
         }
     }
