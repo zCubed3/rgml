@@ -7,7 +7,7 @@ mod vector2 {
     // V2 only operations
     //
     fn test_v2_normalization() {
-        let mut a = Vector2::from_single(2.0f32);
+        let mut a = Vector2::from_scalar(2.0f32);
 
         // Test 4 times for sanity reasons!
         for _ in 0 .. 4 {

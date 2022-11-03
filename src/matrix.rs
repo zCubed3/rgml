@@ -42,7 +42,7 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HEIGHT> 
             array[c][c] = T::real_get_one();
         }
 
-        Self { data: array }
+        return Self { data: array };
     }
 
     /// Transposes the given matrix
@@ -59,7 +59,7 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HEIGHT> 
             }
         }
 
-        m
+        return m;
     }
 }
 
@@ -320,13 +320,14 @@ pub mod common {
 
             let d = one / dot1;
 
-            i * d
+            return i * d;
         }
 
         pub fn perspective(fov_y: T, aspect: T, z_near: T, z_far: T) -> Self {
             let one = T::real_get_one();
             let two = one + one;
 
+            let vertical_fov = fov_y * T::real_deg_to_rad();
             let half_fov = (fov_y / two);
 
             let mut m = Self::default();
@@ -343,9 +344,11 @@ pub mod common {
         pub fn translate(translation: Vector<T, 3>) -> Self {
             let mut m = Self::identity();
 
-            m[2] = [translation[0], translation[1], translation[2], T::real_get_one()];
+            m[0][3] = translation[0];
+            m[1][3] = translation[1];
+            m[2][3] = translation[2];
 
-            m
+            return m;
         }
 
         pub fn rotate_x(rotation: T) -> Self {
@@ -354,7 +357,7 @@ pub mod common {
             m[1] = [T::default(), rotation.real_cos(), -rotation.real_sin(), T::default()];
             m[2] = [T::default(), rotation.real_sin(), rotation.real_cos(), T::default()];
 
-            m
+            return m;
         }
 
         pub fn rotate_y(rotation: T) -> Self {
@@ -363,7 +366,7 @@ pub mod common {
             m[0] = [rotation.real_cos(), T::default(), rotation.real_sin(), T::default()];
             m[2] = [-rotation.real_sin(), T::default(), rotation.real_cos(), T::default()];
 
-            m
+            return m;
         }
 
         pub fn rotate_z(rotation: T) -> Self {
@@ -372,11 +375,12 @@ pub mod common {
             m[0] = [rotation.real_cos(), -rotation.real_sin(), T::default(), T::default()];
             m[1] = [rotation.real_sin(), rotation.real_cos(), T::default(), T::default()];
 
-            m
+            return m;
         }
 
         pub fn rotation(euler: Vector<T, 3>) -> Self {
-            Self::rotate_x(euler[0]) * Self::rotate_y(euler[1]) * Self::rotate_z(euler[2])
+            let euler_rad = euler * T::real_deg_to_rad();
+            Self::rotate_z(euler_rad[2]) * Self::rotate_y(euler_rad[1]) * Self::rotate_x(euler_rad[0])
         }
 
         pub fn look_at(direction: Vector<T, 3>) -> Self {
@@ -392,6 +396,22 @@ pub mod common {
             m[2] = [direction[0], direction[1], direction[2], T::default()];
 
             m
+        }
+
+        pub fn transform_point(self, point: Vector<T, 3>) -> Vector<T, 3> {
+            let mut reference = Vector::<T, 3>::default();
+
+            reference[0] = point[0] * self[0][0] + point[1] * self[0][0] + point[2] * self[0][2] + self[0][3];
+            reference[1] = point[0] * self[1][0] + point[1] * self[1][0] + point[2] * self[1][2] + self[1][3];
+            reference[2] = point[0] * self[2][0] + point[1] * self[2][0] + point[2] * self[2][2] + self[2][3];
+
+            let w : T = point[0] * self[3][0] + point[1] * self[3][1] + point[2] * self[3][2] + self[3][3];
+
+            reference[0] /= w;
+            reference[1] /= w;
+            reference[2] /= w;
+
+            return reference;
         }
     }
 

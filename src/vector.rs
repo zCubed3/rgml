@@ -27,11 +27,11 @@ impl<T: Real, const COUNT: usize> Vector<T, COUNT> {
     }
 
     /// Creates a new [Vector] by copying the provided value into each element
-    pub fn from_single(value: T) -> Self {
+    pub fn from_scalar(value: T) -> Self {
         Vector { data: [value; COUNT] }
     }
 
-    /// Returns the sum of all [VectorReal]'s within this [Vector]
+    /// Returns the sum of all components ([Real]) within this [Vector]
     pub fn sum(&self) -> T {
         let mut sum = T::default();
 
@@ -60,7 +60,7 @@ impl<T: Real, const COUNT: usize> Vector<T, COUNT> {
             d += self[c] * rhs[c];
         }
 
-        d
+        return d;
     }
 
     /// Returns a copy of this [Vector] with each real set to their absolute value
@@ -335,6 +335,18 @@ pub mod common {
     impl<T: Real> Vector<T, 4> {
         pub fn new(x: T, y: T, z: T, w: T) -> Self {
             Self::from_array([x, y, z, w])
+        }
+
+        pub fn from_w(rhs: Vector<T, 3>, w : T) -> Self {
+            let mut o = Vector::<T, 4>::default();
+
+            for c in 0 .. 3 {
+                o[c] = rhs[c];
+            }
+
+            o[3] = w;
+
+            return o;
         }
     }
 
