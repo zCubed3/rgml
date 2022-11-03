@@ -25,6 +25,10 @@ Clone + Copy + Default + Display // Usability
     fn real_max(&self, max: Self) -> Self;
     fn real_clamp(&self, min: Self, max: Self) -> Self;
 
+    fn real_floor(&self) -> Self;
+    fn real_ceil(&self) -> Self;
+    fn real_round(&self) -> Self;
+
     fn real_pow(&self, exp: Self) -> Self;
 
     fn real_lerp(&self, to: Self, alpha: Self) -> Self;
@@ -73,6 +77,18 @@ impl RealNumber for f32 {
 
     fn real_clamp(&self, min: Self, max: Self) -> Self {
         return self.clamp(min, max);
+    }
+
+    fn real_floor(&self) -> Self {
+        return self.floor();
+    }
+
+    fn real_ceil(&self) -> Self {
+        return self.ceil();
+    }
+
+    fn real_round(&self) -> Self {
+        return self.round();
     }
 
     fn real_pow(&self, exp: Self) -> Self {
@@ -132,6 +148,18 @@ impl RealNumber for f64 {
 
     fn real_clamp(&self, min: Self, max: Self) -> Self {
         return self.clamp(min, max);
+    }
+
+    fn real_floor(&self) -> Self {
+        return self.floor();
+    }
+
+    fn real_ceil(&self) -> Self {
+        return self.ceil();
+    }
+
+    fn real_round(&self) -> Self {
+        return self.round();
     }
 
     fn real_pow(&self, exp: Self) -> Self {

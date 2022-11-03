@@ -329,7 +329,7 @@ pub mod common {
             let two = one + one;
 
             let vertical_fov = fov_y * T::real_deg_to_rad();
-            let half_fov = (fov_y / two);
+            let half_fov = fov_y;
 
             let mut m = Self::default();
 

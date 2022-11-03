@@ -4,6 +4,7 @@
 use std::cmp::*;
 use std::fmt::*;
 use std::ops::*;
+use std::iter::*;
 
 use crate::real::RealNumber;
 
@@ -35,21 +36,21 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
     pub fn sum(&self) -> T {
         let mut sum = T::default();
 
-        self.iter().for_each(|x| {
-            sum += *x
-        });
+        for c in 0..COUNT {
+            sum += self[c];
+        }
 
-        sum
+        return sum;
     }
 
     /// The length of this [Vector], not to be confused with [Vector::sum]!
     pub fn magnitude(&self) -> T {
-        self.dot(*self).real_sqrt()
+        return self.dot(*self).real_sqrt();
     }
 
     /// Returns the normalized version of this [Vector]
     pub fn normalize(&self) -> Self {
-        *self / self.magnitude()
+        return *self / self.magnitude();
     }
 
     /// Returns the dot product of this [Vector] and another
@@ -71,7 +72,27 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
             v = v.real_abs();
         }
 
-        a
+        return a;
+    }
+
+    pub fn lerp(&self, to: Self, alpha: T) -> Self {
+        let mut a = *self;
+
+        for c in 0..COUNT {
+            a[c] = self[c].real_lerp(to[c], alpha)
+        }
+
+        return a;
+    }
+
+    pub fn pow(&self, exp: Self) -> Self {
+        let mut a = *self;
+
+        for c in 0..COUNT {
+            a[c] = self[c].real_pow(exp[c]);
+        }
+
+        return a;
     }
 }
 
@@ -139,6 +160,29 @@ impl<T: RealNumber, const COUNT: usize> Display for Vector<T, COUNT> {
 }
 
 //
+// Additional impls
+//
+macro_rules! vector_per_comp_func {
+    ($func:ident, $op:tt, $call:tt) => {
+        impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
+            pub fn $func(&mut self, rhs: Self) -> Self {
+                let mut v = Self::default();
+
+                for c in 0 .. COUNT {
+                    v[c] $op self[c].$call(rhs[c]);
+                }
+
+                return v;
+            }
+        }
+    };
+}
+
+vector_per_comp_func!(min, =, real_min);
+vector_per_comp_func!(max, =, real_max);
+
+
+//
 // Real Math Traits
 //
 macro_rules! real_op_assign {
@@ -165,7 +209,7 @@ macro_rules! real_op {
                     prod[c] $call rhs;
                 }
 
-                prod
+                return prod;
             }
         }
     };
@@ -322,6 +366,10 @@ pub mod common {
                 self[2] * rhs[0] - self[0] * rhs[2],
                 self[0] * rhs[1] - self[1] * rhs[0]
             ])
+        }
+
+        pub fn reflect(&self, normal: Self) -> Self {
+            return *self - normal * self.dot(normal) * (T::real_get_one() + T::real_get_one());
         }
     }
 
