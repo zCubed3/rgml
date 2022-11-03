@@ -5,7 +5,7 @@ use crate::matrix;
 //
 // Real
 //
-pub use real::RealT;
+pub use real::Real;
 
 //
 // Vector types

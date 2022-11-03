@@ -8,7 +8,7 @@ use std::fmt::*;
 /// Strict trait for constraining what types can be used for math
 ///
 /// This trait is already implemented for [f32] and [f64]
-pub trait Real:
+pub trait RealNumber:
     Add<Output=Self> + Sub<Output=Self> + Mul<Output=Self> + Div<Output=Self> + Neg<Output=Self> + // Arithmetic
     AddAssign + SubAssign + MulAssign + DivAssign + // Arithmetic with assign
     PartialEq + PartialOrd + // Equality
@@ -35,7 +35,7 @@ pub trait Real:
 //
 
 // F32
-impl Real for f32 {
+impl RealNumber for f32 {
     fn real_sqrt(&self) -> Self {
         self.sqrt()
     }
@@ -74,7 +74,7 @@ impl Real for f32 {
 }
 
 // F64
-impl Real for f64 {
+impl RealNumber for f64 {
     fn real_sqrt(&self) -> Self {
         self.sqrt()
     }
@@ -113,7 +113,7 @@ impl Real for f64 {
 }
 
 #[cfg(feature="real_t_is_double")]
-pub type RealT = f64;
+pub type Real = f64;
 
 #[cfg(not(feature="real_t_is_double"))]
-pub type RealT = f32;
+pub type Real = f32;

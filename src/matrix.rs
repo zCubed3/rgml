@@ -1,7 +1,7 @@
 #![allow(unused)]
 #![allow(dead_code)]
 
-use super::real::Real;
+use super::real::RealNumber;
 
 use std::ops::*;
 use std::cmp::*;
@@ -17,12 +17,12 @@ use crate::vector::Vector;
 ///    Uncommon matrix types do not include determinant() and inverse() functions
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct Matrix<T: Real, const WIDTH: usize, const HEIGHT: usize> {
+pub struct Matrix<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> {
     /// The underlying array of the matrix, the matrix dereferences into this array
     pub data: [[T; WIDTH]; HEIGHT],
 }
 
-impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HEIGHT> {
+impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HEIGHT> {
     pub fn from_array(array: [[T; WIDTH]; HEIGHT]) -> Self {
         Self { data: array }
     }
@@ -66,7 +66,7 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HEIGHT> 
 //
 // Deref
 //
-impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Deref for Matrix<T, WIDTH, HEIGHT> {
+impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Deref for Matrix<T, WIDTH, HEIGHT> {
     type Target = [[T; WIDTH]; HEIGHT];
 
     fn deref(&self) -> &Self::Target {
@@ -74,7 +74,7 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Deref for Matrix<T, WIDTH
     }
 }
 
-impl<T: Real, const WIDTH: usize, const HEIGHT: usize> DerefMut for Matrix<T, WIDTH, HEIGHT> {
+impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> DerefMut for Matrix<T, WIDTH, HEIGHT> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.data
     }
@@ -83,7 +83,7 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> DerefMut for Matrix<T, WI
 //
 // Formatters
 //
-impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Display for Matrix<T, WIDTH, HEIGHT> {
+impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Display for Matrix<T, WIDTH, HEIGHT> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         for y in 0 .. HEIGHT {
             if y != 0 {
@@ -110,7 +110,7 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Display for Matrix<T, WID
 //
 // Default
 //
-impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Default for Matrix<T, WIDTH, HEIGHT> {
+impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Default for Matrix<T, WIDTH, HEIGHT> {
     fn default() -> Self {
         Self { data: [[T::default(); WIDTH]; HEIGHT] }
     }
@@ -121,7 +121,7 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Default for Matrix<T, WID
 //
 macro_rules! real_op_assign {
     ($op:ident, $func:ident, $call:tt) => {
-        impl<T: Real, const WIDTH: usize, const HEIGHT: usize> $op<T> for Matrix<T, WIDTH, HEIGHT> {
+        impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> $op<T> for Matrix<T, WIDTH, HEIGHT> {
             fn $func(&mut self, rhs: T) {
                 for y in 0 .. HEIGHT {
                     for x in 0 .. WIDTH {
@@ -135,7 +135,7 @@ macro_rules! real_op_assign {
 
 macro_rules! real_op {
     ($op:ident, $func:ident, $call:tt) => {
-        impl<T: Real, const WIDTH: usize, const HEIGHT: usize> $op<T> for Matrix<T, WIDTH, HEIGHT> {
+        impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> $op<T> for Matrix<T, WIDTH, HEIGHT> {
             type Output = Self;
 
             fn $func(self, rhs: T) -> Self::Output {
@@ -164,7 +164,7 @@ real_op!(Mul, mul, *=);
 real_op!(Div, div, /=);
 
 // Matrix * Matrix
-impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Mul<Self> for Matrix<T, WIDTH, HEIGHT> {
+impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Mul<Self> for Matrix<T, WIDTH, HEIGHT> {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
@@ -197,15 +197,15 @@ impl<T: Real, const WIDTH: usize, const HEIGHT: usize> Mul<Self> for Matrix<T, W
 pub mod common {
     use crate::vector::Vector;
     use crate::vector::common::{Vector3, Vector4};
-    use crate::real::{Real, RealT};
+    use crate::real::{RealNumber, Real};
     use super::*;
 
     /// Default matrix 2x2 types
-    pub type Matrix2x2 = Matrix<RealT, 2, 2>;
+    pub type Matrix2x2 = Matrix<Real, 2, 2>;
     pub type Matrix2x2F32 = Matrix<f32, 2, 2>;
     pub type Matrix2x2F64 = Matrix<f64, 2, 2>;
 
-    impl<T: Real> Matrix<T, 2, 2> {
+    impl<T: RealNumber> Matrix<T, 2, 2> {
         #[inline]
         pub fn determinant(&self) -> T {
             self[0][0] * self[1][1] - self[0][1] * self[1][0]
@@ -225,11 +225,11 @@ pub mod common {
     }
 
     /// Default matrix 3x3 types
-    pub type Matrix3x3 = Matrix<RealT, 3, 3>;
+    pub type Matrix3x3 = Matrix<Real, 3, 3>;
     pub type Matrix3x3F32 = Matrix<f32, 3, 3>;
     pub type Matrix3x3F64 = Matrix<f64, 3, 3>;
 
-    impl<T: Real> Matrix<T, 3, 3> {
+    impl<T: RealNumber> Matrix<T, 3, 3> {
         #[inline]
         pub fn determinant(&self) -> T {
             self[0][0] * (self[1][1] * self[2][2] - self[2][1] * self[1][2]) -
@@ -256,11 +256,11 @@ pub mod common {
     }
 
     /// Default matrix 4x4 types
-    pub type Matrix4x4 = Matrix<RealT, 4, 4>;
+    pub type Matrix4x4 = Matrix<Real, 4, 4>;
     pub type Matrix4x4F32 = Matrix<f32, 4, 4>;
     pub type Matrix4x4F64 = Matrix<f64, 4, 4>;
 
-    impl<T: Real> Matrix<T, 4, 4> {
+    impl<T: RealNumber> Matrix<T, 4, 4> {
         pub fn from_vectors(r0: Vector<T, 4>, r1: Vector<T, 4>, r2: Vector<T, 4>, r3: Vector<T, 4>) -> Self {
             Self { data: [*r0, *r1, *r2, *r3] }
         }
@@ -417,7 +417,7 @@ pub mod common {
 
     /// Matrix * Vector
     /// From: <https://github.com/g-truc/glm/blob/master/glm/detail/type_mat4x4.inl>
-    impl<T: Real> Mul<Vector<T, 4>> for Matrix<T, 4, 4> {
+    impl<T: RealNumber> Mul<Vector<T, 4>> for Matrix<T, 4, 4> {
         type Output = Vector<T, 4>;
 
         fn mul(self, rhs: Vector<T, 4>) -> Self::Output {
@@ -432,7 +432,7 @@ pub mod common {
 
     /// Vector * Matrix
     /// From: <https://github.com/g-truc/glm/blob/master/glm/detail/type_mat4x4.inl>
-    impl<T: Real> Mul<Matrix<T, 4, 4>> for Vector<T, 4> {
+    impl<T: RealNumber> Mul<Matrix<T, 4, 4>> for Vector<T, 4> {
         type Output = Self;
 
         fn mul(self, rhs: Matrix<T, 4, 4>) -> Self::Output {

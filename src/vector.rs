@@ -1,7 +1,7 @@
 #![allow(unused)]
 #![allow(dead_code)]
 
-use crate::real::Real;
+use crate::real::RealNumber;
 
 use std::ops::*;
 use std::cmp::*;
@@ -15,12 +15,12 @@ use std::fmt::*;
 ///
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct Vector<T: Real, const COUNT: usize> {
+pub struct Vector<T: RealNumber, const COUNT: usize> {
     /// The underlying array of the vector, the vector dereferences into this array
     pub data: [T; COUNT],
 }
 
-impl<T: Real, const COUNT: usize> Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
     /// Creates a new [Vector] by copying the given array into the backing array
     pub fn from_array(array: [T; COUNT]) -> Self {
         Vector { data: array }
@@ -78,7 +78,7 @@ impl<T: Real, const COUNT: usize> Vector<T, COUNT> {
 //
 // Default
 //
-impl<T: Real, const COUNT: usize> Default for Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> Default for Vector<T, COUNT> {
     fn default() -> Self {
         Self { data: [T::default(); COUNT] }
     }
@@ -88,7 +88,7 @@ impl<T: Real, const COUNT: usize> Default for Vector<T, COUNT> {
 // Deref
 //
 /// Deref to allow the Vector to be treated as its underlying backing array
-impl<T: Real, const COUNT: usize> Deref for Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> Deref for Vector<T, COUNT> {
     type Target = [T; COUNT];
 
     fn deref(&self) -> &Self::Target {
@@ -96,7 +96,7 @@ impl<T: Real, const COUNT: usize> Deref for Vector<T, COUNT> {
     }
 }
 
-impl<T: Real, const COUNT: usize> DerefMut for Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> DerefMut for Vector<T, COUNT> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.data
     }
@@ -105,7 +105,7 @@ impl<T: Real, const COUNT: usize> DerefMut for Vector<T, COUNT> {
 //
 // Formatting Traits
 //
-impl<T: Real, const COUNT: usize> Debug for Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> Debug for Vector<T, COUNT> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "Vector<{}, {}> {{\n", std::any::type_name::<T>(), COUNT).expect("Failed to write!");
 
@@ -119,7 +119,7 @@ impl<T: Real, const COUNT: usize> Debug for Vector<T, COUNT> {
     }
 }
 
-impl<T: Real, const COUNT: usize> Display for Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> Display for Vector<T, COUNT> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "<").expect("Failed to write!");
 
@@ -143,7 +143,7 @@ impl<T: Real, const COUNT: usize> Display for Vector<T, COUNT> {
 //
 macro_rules! real_op_assign {
     ($op:ident, $func:ident, $call:tt) => {
-        impl<T: Real, const COUNT: usize> $op<T> for Vector<T, COUNT> {
+        impl<T: RealNumber, const COUNT: usize> $op<T> for Vector<T, COUNT> {
             fn $func(&mut self, rhs: T) {
                 for c in 0 .. COUNT {
                     self[c] $call rhs;
@@ -155,7 +155,7 @@ macro_rules! real_op_assign {
 
 macro_rules! real_op {
     ($op:ident, $func:ident, $call:tt) => {
-        impl<T: Real, const COUNT: usize> $op<T> for Vector<T, COUNT> {
+        impl<T: RealNumber, const COUNT: usize> $op<T> for Vector<T, COUNT> {
             type Output = Self;
 
             fn $func(self, rhs: T) -> Self::Output {
@@ -186,7 +186,7 @@ real_op!(Div, div, /=);
 //
 macro_rules! vector_op_assign {
     ($op:ident, $func:ident, $call:tt) => {
-        impl<T: Real, const COUNT: usize> $op<Self> for Vector<T, COUNT> {
+        impl<T: RealNumber, const COUNT: usize> $op<Self> for Vector<T, COUNT> {
             fn $func(&mut self, rhs: Self) {
                 for c in 0 .. COUNT {
                     self[c] $call rhs[c];
@@ -198,7 +198,7 @@ macro_rules! vector_op_assign {
 
 macro_rules! vector_op {
     ($op:ident, $func:ident, $call:tt) => {
-        impl<T: Real, const COUNT: usize> $op<Self> for Vector<T, COUNT> {
+        impl<T: RealNumber, const COUNT: usize> $op<Self> for Vector<T, COUNT> {
             type Output = Self;
 
             fn $func(self, rhs: Self) -> Self::Output {
@@ -227,7 +227,7 @@ vector_op!(Div, div, /=);
 //
 // Vector negation
 //
-impl<T: Real, const COUNT: usize> Neg for Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> Neg for Vector<T, COUNT> {
     type Output = Self;
 
     fn neg(self) -> Self::Output {
@@ -244,7 +244,7 @@ impl<T: Real, const COUNT: usize> Neg for Vector<T, COUNT> {
 //
 // Vector comparison
 //
-impl<T: Real, const COUNT: usize> PartialEq for Vector<T, COUNT> {
+impl<T: RealNumber, const COUNT: usize> PartialEq for Vector<T, COUNT> {
     fn eq(&self, other: &Self) -> bool {
         for c in 0 .. COUNT {
             if self[c] != other[c] {
@@ -263,7 +263,7 @@ impl<T: Real, const COUNT: usize> PartialEq for Vector<T, COUNT> {
 /// Macro to provide a [From] implementation for casting this [Vector] into another [Vector]
 macro_rules! vector_from_vector {
     ($from_count:literal, $into_count:literal) => {
-        impl<T: Real> From<Vector<T, $from_count>> for Vector<T, $into_count> {
+        impl<T: RealNumber> From<Vector<T, $from_count>> for Vector<T, $into_count> {
             fn from(rhs: Vector<T, $from_count>) -> Self {
                 let mut o = Vector::<T, $into_count>::default();
 
@@ -284,31 +284,31 @@ macro_rules! vector_from_vector {
 /// Contains commonly used [Vector] aliases with additional implementations for ease of use
 pub mod common {
     use super::*;
-    use crate::real::RealT;
+    use crate::real::Real;
 
     /// Common Vector2 types
-    pub type Vector2 = Vector<RealT, 2>;
+    pub type Vector2 = Vector<Real, 2>;
     pub type Vector2F32 = Vector<f32, 2>;
     pub type Vector2F64 = Vector<f64, 2>;
 
     vector_from_vector!(2, 3);
     vector_from_vector!(2, 4);
 
-    impl<T: Real> Vector<T, 2> {
+    impl<T: RealNumber> Vector<T, 2> {
         pub fn new(x: T, y: T) -> Self {
             Self::from_array([x, y])
         }
     }
 
     /// Common Vector2 types
-    pub type Vector3 = Vector<RealT, 3>;
+    pub type Vector3 = Vector<Real, 3>;
     pub type Vector3F32 = Vector<f32, 3>;
     pub type Vector3F64 = Vector<f64, 3>;
 
     vector_from_vector!(3, 2);
     vector_from_vector!(3, 4);
 
-    impl<T: Real> Vector<T, 3> {
+    impl<T: RealNumber> Vector<T, 3> {
         pub fn new(x: T, y: T, z: T) -> Self {
             Self::from_array([x, y, z])
         }
@@ -325,14 +325,14 @@ pub mod common {
     }
 
     /// Common 4D vector types (same type as [Quaternion])
-    pub type Vector4 = Vector<RealT, 4>;
+    pub type Vector4 = Vector<Real, 4>;
     pub type Vector4F32 = Vector<f32, 4>;
     pub type Vector4F64 = Vector<f64, 4>;
 
     vector_from_vector!(4, 2);
     vector_from_vector!(4, 3);
 
-    impl<T: Real> Vector<T, 4> {
+    impl<T: RealNumber> Vector<T, 4> {
         pub fn new(x: T, y: T, z: T, w: T) -> Self {
             Self::from_array([x, y, z, w])
         }
