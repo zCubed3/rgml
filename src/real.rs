@@ -33,6 +33,9 @@ Clone + Copy + Default + Display // Usability
 
     fn real_lerp(&self, to: Self, alpha: Self) -> Self;
 
+    fn real_to_radians(&self) -> Self;
+    fn real_to_degrees(&self) -> Self;
+
     fn real_rad_to_deg() -> Self;
     fn real_deg_to_rad() -> Self;
 
@@ -97,6 +100,14 @@ impl RealNumber for f32 {
 
     fn real_lerp(&self, to: Self, alpha: Self) -> Self {
         return (1.0 - alpha) * self + alpha * to;
+    }
+
+    fn real_to_radians(&self) -> Self {
+        return self.to_radians();
+    }
+
+    fn real_to_degrees(&self) -> Self {
+        return self.to_degrees();
     }
 
     fn real_rad_to_deg() -> Self {
@@ -168,6 +179,14 @@ impl RealNumber for f64 {
 
     fn real_lerp(&self, to: Self, alpha: Self) -> Self {
         return (1.0 - alpha) * self + alpha * to;
+    }
+
+    fn real_to_radians(&self) -> Self {
+        return self.to_radians();
+    }
+
+    fn real_to_degrees(&self) -> Self {
+        return self.to_degrees();
     }
 
     fn real_rad_to_deg() -> Self {
