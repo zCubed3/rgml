@@ -19,11 +19,14 @@ Clone + Copy + Default + Display // Usability
     fn real_cos(&self) -> Self;
     fn real_tan(&self) -> Self;
 
+    fn real_exp(&self) -> Self;
+
     fn real_abs(&self) -> Self;
 
     fn real_min(&self, min: Self) -> Self;
     fn real_max(&self, max: Self) -> Self;
     fn real_clamp(&self, min: Self, max: Self) -> Self;
+    fn real_saturate(&self) -> Self;
 
     fn real_floor(&self) -> Self;
     fn real_ceil(&self) -> Self;
@@ -66,6 +69,10 @@ impl RealNumber for f32 {
         self.tan()
     }
 
+    fn real_exp(&self) -> Self {
+        return self.exp();
+    }
+
     fn real_abs(&self) -> Self {
         self.abs()
     }
@@ -80,6 +87,10 @@ impl RealNumber for f32 {
 
     fn real_clamp(&self, min: Self, max: Self) -> Self {
         return self.clamp(min, max);
+    }
+
+    fn real_saturate(&self) -> Self {
+        return self.min(1.0).max(0.0);
     }
 
     fn real_floor(&self) -> Self {
@@ -145,6 +156,10 @@ impl RealNumber for f64 {
         self.tan()
     }
 
+    fn real_exp(&self) -> Self {
+        return self.exp();
+    }
+
     fn real_abs(&self) -> Self {
         self.abs()
     }
@@ -159,6 +174,10 @@ impl RealNumber for f64 {
 
     fn real_clamp(&self, min: Self, max: Self) -> Self {
         return self.clamp(min, max);
+    }
+
+    fn real_saturate(&self) -> Self {
+        return self.min(1.0).max(0.0);
     }
 
     fn real_floor(&self) -> Self {

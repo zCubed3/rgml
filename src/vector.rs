@@ -70,17 +70,6 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return d;
     }
 
-    /// Returns a copy of this [Vector] with each real set to their absolute value
-    pub fn abs(&self) -> Self {
-        let mut a = *self;
-
-        for mut v in *a {
-            v = v.real_abs();
-        }
-
-        return a;
-    }
-
     pub fn lerp(&self, to: Self, alpha: T) -> Self {
         let mut a = *self;
 
@@ -175,6 +164,22 @@ macro_rules! vector_per_comp_func {
                 let mut v = Self::default();
 
                 for c in 0 .. COUNT {
+                    v[c] $op self[c].$call();
+                }
+
+                return v;
+            }
+        }
+    };
+}
+
+macro_rules! vector_comp_comp_func {
+    ($func:ident, $op:tt, $call:tt) => {
+        impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
+            pub fn $func(&mut self, rhs: Self) -> Self {
+                let mut v = Self::default();
+
+                for c in 0 .. COUNT {
                     v[c] $op self[c].$call(rhs[c]);
                 }
 
@@ -184,8 +189,10 @@ macro_rules! vector_per_comp_func {
     };
 }
 
-vector_per_comp_func!(min, =, real_min);
-vector_per_comp_func!(max, =, real_max);
+vector_comp_comp_func!(min, =, real_min);
+vector_comp_comp_func!(max, =, real_max);
+vector_per_comp_func!(abs, =, real_abs);
+vector_per_comp_func!(saturate, =, real_saturate);
 
 
 //
