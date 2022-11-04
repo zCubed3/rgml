@@ -8,6 +8,12 @@ use std::iter::*;
 
 use crate::real::RealNumber;
 
+#[cfg(feature="swizzle")]
+pub mod swizzle_gen;
+
+#[cfg(feature="swizzle")]
+pub use swizzle_gen::*;
+
 ///
 /// Configurable vector type for usage with Vector math
 ///

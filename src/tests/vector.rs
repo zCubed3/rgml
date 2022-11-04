@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 mod vector2 {
-    use crate::common::*;
+    use crate::prelude::*;
 
     //
     // V2 only operations
@@ -22,7 +22,7 @@ mod vector2 {
 }
 
 mod vector3 {
-    use crate::common::*;
+    use crate::prelude::*;
 
     //
     // V3 only operations
