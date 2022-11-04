@@ -24,6 +24,7 @@ pub mod prelude {
     // Real
     //
     pub use real::Real;
+    pub use real::RealNumber;
 
     //
     // Vector types

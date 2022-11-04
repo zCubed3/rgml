@@ -79,16 +79,6 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 
         return a;
     }
-
-    pub fn pow(&self, exp: Self) -> Self {
-        let mut a = *self;
-
-        for c in 0..COUNT {
-            a[c] = self[c].real_pow(exp[c]);
-        }
-
-        return a;
-    }
 }
 
 //
@@ -160,7 +150,7 @@ impl<T: RealNumber, const COUNT: usize> Display for Vector<T, COUNT> {
 macro_rules! vector_per_comp_func {
     ($func:ident, $op:tt, $call:tt) => {
         impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
-            pub fn $func(&mut self, rhs: Self) -> Self {
+            pub fn $func(&self, rhs: Self) -> Self {
                 let mut v = Self::default();
 
                 for c in 0 .. COUNT {
@@ -176,7 +166,7 @@ macro_rules! vector_per_comp_func {
 macro_rules! vector_comp_comp_func {
     ($func:ident, $op:tt, $call:tt) => {
         impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
-            pub fn $func(&mut self, rhs: Self) -> Self {
+            pub fn $func(&self, rhs: Self) -> Self {
                 let mut v = Self::default();
 
                 for c in 0 .. COUNT {
@@ -191,6 +181,7 @@ macro_rules! vector_comp_comp_func {
 
 vector_comp_comp_func!(min, =, real_min);
 vector_comp_comp_func!(max, =, real_max);
+vector_comp_comp_func!(pow, =, real_pow);
 vector_per_comp_func!(abs, =, real_abs);
 vector_per_comp_func!(saturate, =, real_saturate);
 

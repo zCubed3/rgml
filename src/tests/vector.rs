@@ -1,124 +1,337 @@
 #![allow(unused)]
 
-mod vector2 {
+mod vector2f32 {
     use crate::prelude::*;
 
-    //
-    // V2 only operations
-    //
+    #[test]
     fn test_v2_normalization() {
-        let mut a = Vector2::from_scalar(2.0);
+        let original = Vector2F32::new(2.0, 2.0);
+        let norm = original.normalize();
 
-        // Test 4 times for sanity reasons!
-        for _ in 0 .. 4 {
-            assert_eq!(a.normalize().magnitude(), 1.0);
-            a *= a;
-        }
+        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_ne!(norm, original);
     }
 
-    //
-    // V2 and V3 operations
-    //
+    #[test]
+    fn test_v2_add() {
+        let a = Vector2F32::new(1.0, 0.0);
+        let b = Vector2F32::new(0.0, 1.0);
+
+        assert_eq!(a + b, Vector2F32::from_scalar(1.0));
+    }
+
+    #[test]
+    fn test_v2_sub() {
+        let a = Vector2F32::new(1.0, 2.0);
+        let b = Vector2F32::new(2.0, 1.0);
+
+        assert_eq!(a - b, Vector2F32::new(-1.0, 1.0));
+    }
+
+    #[test]
+    fn test_v2_mul() {
+        let a = Vector2F32::new(1.0, 2.0);
+        let b = Vector2F32::new(2.0, 0.5);
+
+        assert_eq!(a * b, Vector2F32::new(2.0, 1.0));
+    }
+
+    #[test]
+    fn test_v2_div() {
+        let a = Vector2F32::new(2.0, 2.0);
+        let b = Vector2F32::new(2.0, 0.5);
+
+        assert_eq!(a / b, Vector2F32::new(1.0, 4.0));
+    }
+
+    #[test]
+    fn test_v2_pow() {
+        let a = Vector2F32::new(2.0, 2.0);
+        let b = Vector2F32::new(2.0, 4.0);
+
+        assert_eq!(a.pow(b), Vector2F32::new(4.0, 16.0));
+    }
+
+    #[test]
+    fn test_v2_from_scalar() {
+        assert_eq!(Vector2F32::new(1.0, 1.0), Vector2F32::from_scalar(1.0));
+    }
+
+    #[test]
+    fn test_v2_from_array() {
+        assert_eq!(Vector2F32::new(2.0, 1.0), Vector2F32::from_array([2.0, 1.0]));
+    }
+
+    #[test]
+    #[cfg(feature="swizzle")]
+    fn test_v2_swizzle() {
+        let t = Vector2F32::new(1.0, 2.0);
+
+        assert_ne!(t.xy(), t.yx());
+        assert_ne!(t.rg(), t.gr());
+        assert_ne!(t.uv(), t.vu());
+
+        assert_ne!(t.xyx(), t.yxy());
+        assert_ne!(t.rgr(), t.grg());
+        assert_ne!(t.uvu(), t.vuv());
+
+        assert_ne!(t.xyxy(), t.yxyx());
+        assert_ne!(t.rgrg(), t.grgr());
+        assert_ne!(t.uvuv(), t.vuvu());
+
+        assert_eq!(t.xy(), t.uv());
+        assert_eq!(t.xy(), t.rg());
+    }
 }
 
-mod vector3 {
+mod vector2f64 {
     use crate::prelude::*;
 
-    //
-    // V3 only operations
-    //
+    #[test]
+    fn test_v2_normalization() {
+        let original = Vector2F64::new(2.0, 2.0);
+        let norm = original.normalize();
+
+        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_ne!(norm, original);
+    }
+
+    #[test]
+    fn test_v2_add() {
+        let a = Vector2F64::new(1.0, 0.0);
+        let b = Vector2F64::new(0.0, 1.0);
+
+        assert_eq!(a + b, Vector2F64::from_scalar(1.0));
+    }
+
+    #[test]
+    fn test_v2_sub() {
+        let a = Vector2F64::new(1.0, 2.0);
+        let b = Vector2F64::new(2.0, 1.0);
+
+        assert_eq!(a - b, Vector2F64::new(-1.0, 1.0));
+    }
+
+    #[test]
+    fn test_v2_mul() {
+        let a = Vector2F64::new(1.0, 2.0);
+        let b = Vector2F64::new(2.0, 0.5);
+
+        assert_eq!(a * b, Vector2F64::new(2.0, 1.0));
+    }
+
+    #[test]
+    fn test_v2_div() {
+        let a = Vector2F64::new(2.0, 2.0);
+        let b = Vector2F64::new(2.0, 0.5);
+
+        assert_eq!(a / b, Vector2F64::new(1.0, 4.0));
+    }
+
+    #[test]
+    fn test_v2_pow() {
+        let a = Vector2F64::new(2.0, 2.0);
+        let b = Vector2F64::new(2.0, 4.0);
+
+        assert_eq!(a.pow(b), Vector2F64::new(4.0, 16.0));
+    }
+
+    #[test]
+    fn test_v2_from_scalar() {
+        assert_eq!(Vector2F64::new(1.0, 1.0), Vector2F64::from_scalar(1.0));
+    }
+
+    #[test]
+    fn test_v2_from_array() {
+        assert_eq!(Vector2F64::new(2.0, 1.0), Vector2F64::from_array([2.0, 1.0]));
+    }
+
+    #[test]
+    #[cfg(feature="swizzle")]
+    fn test_v2_swizzle() {
+        let t = Vector2F64::new(1.0, 2.0);
+
+        assert_ne!(t.xy(), t.yx());
+        assert_ne!(t.rg(), t.gr());
+        assert_ne!(t.uv(), t.vu());
+
+        assert_ne!(t.xyx(), t.yxy());
+        assert_ne!(t.rgr(), t.grg());
+        assert_ne!(t.uvu(), t.vuv());
+
+        assert_ne!(t.xyxy(), t.yxyx());
+        assert_ne!(t.rgrg(), t.grgr());
+        assert_ne!(t.uvuv(), t.vuvu());
+
+        assert_eq!(t.xy(), t.uv());
+        assert_eq!(t.xy(), t.rg());
+    }
+}
+
+mod vector3f32 {
+    use crate::prelude::*;
+
+    #[test]
     fn test_v3_normalization() {
-        let mut a = Vector3::from_scalar(1.0);
+        let original = Vector3F32::new(2.0, 2.0, 2.0);
+        let norm = original.normalize();
 
-        // Test 4 times for sanity reasons!
-        for _ in 0 .. 4 {
-            assert_eq!(a.normalize().magnitude(), 1.0);
-            a *= 2.0;
-        }
-    }
-
-    //
-    // V3 and V3 operations
-    //
-    #[test]
-    fn test_v3_v3_addition() {
-        let a = Vector3::from_array([0.75, 0.25, 0.5]);
-        let b = Vector3::from_array([0.25, 0.75, 0.5]);
-
-        assert_eq!(a + b, Vector3::from_array([1.0, 1.0, 1.0]))
+        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_ne!(norm, original);
     }
 
     #[test]
-    fn test_v3_v3_subtraction() {
-        let a = Vector3::from_array([2.0, 4.0, 8.0]);
-        let b = Vector3::from_array([1.0, 3.0, 7.0]);
+    fn test_v3_add() {
+        let a = Vector3F32::new(1.0, 0.0, 0.5);
+        let b = Vector3F32::new(0.0, 1.0, 0.5);
 
-        assert_eq!(a - b, Vector3::from_array([1.0, 1.0, 1.0]))
+        assert_eq!(a + b, Vector3F32::from_scalar(1.0));
     }
 
     #[test]
-    fn test_v3_v3_multiply() {
-        let a = Vector3::from_array([1.0, 2.0, 4.0]);
-        let b = Vector3::from_array([2.0, 2.0, 2.0]);
+    fn test_v3_sub() {
+        let a = Vector3F32::new(1.0, 2.0, 1.0);
+        let b = Vector3F32::new(2.0, 1.0, 1.0);
 
-        assert_eq!(a * b, Vector3::from_array([2.0, 4.0, 8.0]))
+        assert_eq!(a - b, Vector3F32::new(-1.0, 1.0, 0.0));
     }
 
     #[test]
-    fn test_v3_v3_division() {
-        let a = Vector3::from_array([2.0, 4.0, 8.0]);
-        let b = Vector3::from_array([2.0, 2.0, 2.0]);
+    fn test_v3_mul() {
+        let a = Vector3F32::new(1.0, 2.0, 2.0);
+        let b = Vector3F32::new(2.0, 0.5, 2.0);
 
-        assert_eq!(a / b, Vector3::from_array([1.0, 2.0, 4.0]))
+        assert_eq!(a * b, Vector3F32::new(2.0, 1.0, 4.0));
     }
 
     #[test]
-    fn test_v3_v3_cross() {
-        let a = Vector3::from_array([1.0, 0.0, 0.0]);
-        let b = Vector3::from_array([0.0, 1.0, 0.0]);
+    fn test_v3_div() {
+        let a = Vector3F32::new(2.0, 2.0, 2.0);
+        let b = Vector3F32::new(2.0, 0.5, 4.0);
 
-        assert_eq!(a.cross(b), Vector3::from_array([0.0, 0.0, 1.0]))
-    }
-
-    //
-    // V3 and .0 operations
-    //
-    #[test]
-    fn test_v3_addition() {
-        assert_eq!(Vector3::from_array([0.0, 1.0, 2.0]) + 1.0, Vector3::from_array([1.0, 2.0, 3.0]))
+        assert_eq!(a / b, Vector3F32::new(1.0, 4.0, 0.5));
     }
 
     #[test]
-    fn test_v3_subtraction() {
-        assert_eq!(Vector3::from_array([1.0, 2.0, 3.0]) - 1.0, Vector3::from_array([0.0, 1.0, 2.0]))
+    fn test_v3_pow() {
+        let a = Vector3F32::new(2.0, 2.0, 2.0);
+        let b = Vector3F32::new(2.0, 4.0, 8.0);
+
+        assert_eq!(a.pow(b), Vector3F32::new(4.0, 16.0, 256.0));
     }
 
     #[test]
-    fn test_v3_multiply() {
-        assert_eq!(Vector3::from_array([1.0, 2.0, 4.0]) * 2.0, Vector3::from_array([2.0, 4.0, 8.0]))
+    fn test_v3_from_scalar() {
+        assert_eq!(Vector3F32::new(1.0, 1.0, 1.0), Vector3F32::from_scalar(1.0));
     }
 
     #[test]
-    fn test_v3_division() {
-        assert_eq!(Vector3::from_array([2.0, 4.0, 8.0]) / 2.0, Vector3::from_array([1.0, 2.0, 4.0]))
-    }
-
-    //
-    // V3 from other vector tests
-    //
-    #[test]
-    fn test_v3_from_v2() {
-        let v2 = Vector2::from_array([1.0, 2.0]);
-        let v3 = Vector3::from(v2);
-
-        assert_eq!(v3, Vector3::from_array([1.0, 2.0, 0.0]))
+    fn test_v3_from_array() {
+        assert_eq!(Vector3F32::new(2.0, 1.0, 0.0), Vector3F32::from_array([2.0, 1.0, 0.0]));
     }
 
     #[test]
-    fn test_v3_from_v4() {
-        let v4 = Vector4::from_array([1.0, 2.0, 3.0, 4.0]);
-        let v3 = Vector3::from(v4);
+    #[cfg(feature="swizzle")]
+    fn test_v3_swizzle() {
+        let t = Vector3F32::new(1.0, 2.0, 3.0);
 
-        assert_eq!(v3, Vector3::from_array([1.0, 2.0, 3.0]))
+        assert_ne!(t.xy(), t.yx());
+        assert_ne!(t.rg(), t.gr());
+        assert_ne!(t.uv(), t.vu());
+
+        assert_ne!(t.xyx(), t.yxy());
+        assert_ne!(t.rgr(), t.grg());
+        assert_ne!(t.uvu(), t.vuv());
+
+        assert_ne!(t.xyxy(), t.yxyx());
+        assert_ne!(t.rgrg(), t.grgr());
+        assert_ne!(t.uvuv(), t.vuvu());
+
+        assert_eq!(t.xy(), t.uv());
+        assert_eq!(t.xy(), t.rg());
+    }
+}
+
+mod vector3f64 {
+    use crate::prelude::*;
+
+    #[test]
+    fn test_v3_normalization() {
+        let original = Vector3F64::new(2.0, 2.0, 2.0);
+        let norm = original.normalize();
+
+        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_ne!(norm, original);
+    }
+
+    #[test]
+    fn test_v3_add() {
+        let a = Vector3F64::new(1.0, 0.0, 0.5);
+        let b = Vector3F64::new(0.0, 1.0, 0.5);
+
+        assert_eq!(a + b, Vector3F64::from_scalar(1.0));
+    }
+
+    #[test]
+    fn test_v3_sub() {
+        let a = Vector3F64::new(1.0, 2.0, 1.0);
+        let b = Vector3F64::new(2.0, 1.0, 1.0);
+
+        assert_eq!(a - b, Vector3F64::new(-1.0, 1.0, 0.0));
+    }
+
+    #[test]
+    fn test_v3_mul() {
+        let a = Vector3F64::new(1.0, 2.0, 2.0);
+        let b = Vector3F64::new(2.0, 0.5, 2.0);
+
+        assert_eq!(a * b, Vector3F64::new(2.0, 1.0, 4.0));
+    }
+
+    #[test]
+    fn test_v3_div() {
+        let a = Vector3F64::new(2.0, 2.0, 2.0);
+        let b = Vector3F64::new(2.0, 0.5, 4.0);
+
+        assert_eq!(a / b, Vector3F64::new(1.0, 4.0, 0.5));
+    }
+
+    #[test]
+    fn test_v3_pow() {
+        let a = Vector3F64::new(2.0, 2.0, 2.0);
+        let b = Vector3F64::new(2.0, 4.0, 8.0);
+
+        assert_eq!(a.pow(b), Vector3F64::new(4.0, 16.0, 256.0));
+    }
+
+    #[test]
+    fn test_v3_from_scalar() {
+        assert_eq!(Vector3F64::new(1.0, 1.0, 1.0), Vector3F64::from_scalar(1.0));
+    }
+
+    #[test]
+    fn test_v3_from_array() {
+        assert_eq!(Vector3F64::new(2.0, 1.0, 0.0), Vector3F64::from_array([2.0, 1.0, 0.0]));
+    }
+
+    #[test]
+    #[cfg(feature = "swizzle")]
+    fn test_v3_swizzle() {
+        let t = Vector3F64::new(1.0, 2.0, 3.0);
+
+        assert_ne!(t.xy(), t.yx());
+        assert_ne!(t.rg(), t.gr());
+        assert_ne!(t.uv(), t.vu());
+
+        assert_ne!(t.xyx(), t.yxy());
+        assert_ne!(t.rgr(), t.grg());
+        assert_ne!(t.uvu(), t.vuv());
+
+        assert_ne!(t.xyxy(), t.yxyx());
+        assert_ne!(t.rgrg(), t.grgr());
+        assert_ne!(t.uvuv(), t.vuvu());
+
+        assert_eq!(t.xy(), t.uv());
+        assert_eq!(t.xy(), t.rg());
     }
 }
