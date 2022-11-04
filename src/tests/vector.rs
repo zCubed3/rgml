@@ -7,11 +7,11 @@ mod vector2 {
     // V2 only operations
     //
     fn test_v2_normalization() {
-        let mut a = Vector2::from_scalar(2.0f32);
+        let mut a = Vector2::from_scalar(2.0);
 
         // Test 4 times for sanity reasons!
         for _ in 0 .. 4 {
-            assert_eq!(a.normalize().magnitude(), 1f32);
+            assert_eq!(a.normalize().magnitude(), 1.0);
             a *= a;
         }
     }
@@ -22,18 +22,18 @@ mod vector2 {
 }
 
 mod vector3 {
-    use crate::{Vector2, Vector3, Vector4};
+    use crate::common::*;
 
     //
     // V3 only operations
     //
     fn test_v3_normalization() {
-        let mut a = Vector3::from_single(1.0f32);
+        let mut a = Vector3::from_scalar(1.0);
 
         // Test 4 times for sanity reasons!
         for _ in 0 .. 4 {
-            assert_eq!(a.normalize().magnitude(), 1f32);
-            a *= 2f32;
+            assert_eq!(a.normalize().magnitude(), 1.0);
+            a *= 2.0;
         }
     }
 
@@ -42,65 +42,65 @@ mod vector3 {
     //
     #[test]
     fn test_v3_v3_addition() {
-        let a = Vector3::from_array([0.75f32, 0.25f32, 0.5f32]);
-        let b = Vector3::from_array([0.25f32, 0.75f32, 0.5f32]);
+        let a = Vector3::from_array([0.75, 0.25, 0.5]);
+        let b = Vector3::from_array([0.25, 0.75, 0.5]);
 
-        assert_eq!(a + b, Vector3::from_array([1f32, 1f32, 1f32]))
+        assert_eq!(a + b, Vector3::from_array([1.0, 1.0, 1.0]))
     }
 
     #[test]
     fn test_v3_v3_subtraction() {
-        let a = Vector3::from_array([2f32, 4f32, 8f32]);
-        let b = Vector3::from_array([1f32, 3f32, 7f32]);
+        let a = Vector3::from_array([2.0, 4.0, 8.0]);
+        let b = Vector3::from_array([1.0, 3.0, 7.0]);
 
-        assert_eq!(a - b, Vector3::from_array([1f32, 1f32, 1f32]))
+        assert_eq!(a - b, Vector3::from_array([1.0, 1.0, 1.0]))
     }
 
     #[test]
     fn test_v3_v3_multiply() {
-        let a = Vector3::from_array([1f32, 2f32, 4f32]);
-        let b = Vector3::from_array([2f32, 2f32, 2f32]);
+        let a = Vector3::from_array([1.0, 2.0, 4.0]);
+        let b = Vector3::from_array([2.0, 2.0, 2.0]);
 
-        assert_eq!(a * b, Vector3::from_array([2f32, 4f32, 8f32]))
+        assert_eq!(a * b, Vector3::from_array([2.0, 4.0, 8.0]))
     }
 
     #[test]
     fn test_v3_v3_division() {
-        let a = Vector3::from_array([2f32, 4f32, 8f32]);
-        let b = Vector3::from_array([2f32, 2f32, 2f32]);
+        let a = Vector3::from_array([2.0, 4.0, 8.0]);
+        let b = Vector3::from_array([2.0, 2.0, 2.0]);
 
-        assert_eq!(a / b, Vector3::from_array([1f32, 2f32, 4f32]))
+        assert_eq!(a / b, Vector3::from_array([1.0, 2.0, 4.0]))
     }
 
     #[test]
     fn test_v3_v3_cross() {
-        let a = Vector3::from_array([1f32, 0f32, 0f32]);
-        let b = Vector3::from_array([0f32, 1f32, 0f32]);
+        let a = Vector3::from_array([1.0, 0.0, 0.0]);
+        let b = Vector3::from_array([0.0, 1.0, 0.0]);
 
-        assert_eq!(a.cross(b), Vector3::from_array([0f32, 0f32, 1f32]))
+        assert_eq!(a.cross(b), Vector3::from_array([0.0, 0.0, 1.0]))
     }
 
     //
-    // V3 and F32 operations
+    // V3 and .0 operations
     //
     #[test]
-    fn test_v3_f32_addition() {
-        assert_eq!(Vector3::from_array([0f32, 1f32, 2f32]) + 1f32, Vector3::from_array([1f32, 2f32, 3f32]))
+    fn test_v3_addition() {
+        assert_eq!(Vector3::from_array([0.0, 1.0, 2.0]) + 1.0, Vector3::from_array([1.0, 2.0, 3.0]))
     }
 
     #[test]
-    fn test_v3_f32_subtraction() {
-        assert_eq!(Vector3::from_array([1f32, 2f32, 3f32]) - 1f32, Vector3::from_array([0f32, 1f32, 2f32]))
+    fn test_v3_subtraction() {
+        assert_eq!(Vector3::from_array([1.0, 2.0, 3.0]) - 1.0, Vector3::from_array([0.0, 1.0, 2.0]))
     }
 
     #[test]
-    fn test_v3_f32_multiply() {
-        assert_eq!(Vector3::from_array([1f32, 2f32, 4f32]) * 2f32, Vector3::from_array([2f32, 4f32, 8f32]))
+    fn test_v3_multiply() {
+        assert_eq!(Vector3::from_array([1.0, 2.0, 4.0]) * 2.0, Vector3::from_array([2.0, 4.0, 8.0]))
     }
 
     #[test]
-    fn test_v3_f32_division() {
-        assert_eq!(Vector3::from_array([2f32, 4f32, 8f32]) / 2f32, Vector3::from_array([1f32, 2f32, 4f32]))
+    fn test_v3_division() {
+        assert_eq!(Vector3::from_array([2.0, 4.0, 8.0]) / 2.0, Vector3::from_array([1.0, 2.0, 4.0]))
     }
 
     //
@@ -108,17 +108,17 @@ mod vector3 {
     //
     #[test]
     fn test_v3_from_v2() {
-        let v2 = Vector2::from_array([1f32, 2f32]);
+        let v2 = Vector2::from_array([1.0, 2.0]);
         let v3 = Vector3::from(v2);
 
-        assert_eq!(v3, Vector3::from_array([1f32, 2f32, 0f32]))
+        assert_eq!(v3, Vector3::from_array([1.0, 2.0, 0.0]))
     }
 
     #[test]
     fn test_v3_from_v4() {
-        let v4 = Vector4::from_array([1f32, 2f32, 3f32, 4f32]);
+        let v4 = Vector4::from_array([1.0, 2.0, 3.0, 4.0]);
         let v3 = Vector3::from(v4);
 
-        assert_eq!(v3, Vector3::from_array([1f32, 2f32, 3f32]))
+        assert_eq!(v3, Vector3::from_array([1.0, 2.0, 3.0]))
     }
 }
