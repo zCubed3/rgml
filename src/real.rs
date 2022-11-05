@@ -1,6 +1,8 @@
 use std::cmp::*;
 use std::fmt::*;
 use std::ops::*;
+use crate::prelude::Vector2;
+use crate::vector::*;
 
 // https://www.worthe-it.co.za/blog/2017-01-15-aliasing-traits-in-rust.html
 
@@ -45,6 +47,18 @@ Clone + Copy + Default + Display // Usability
     fn real_pi() -> Self;
 
     fn real_get_one() -> Self;
+
+    #[cfg(feature="swizzle")]
+    fn x(&self) -> Self;
+
+    #[cfg(feature="swizzle")]
+    fn xx(&self) -> Vector<Self, 2>;
+
+    #[cfg(feature="swizzle")]
+    fn xxx(&self) -> Vector<Self, 3>;
+
+    #[cfg(feature="swizzle")]
+    fn xxxx(&self) -> Vector<Self, 4>;
 }
 
 //
@@ -136,6 +150,26 @@ impl RealNumber for f32 {
     fn real_get_one() -> Self {
         1f32
     }
+
+    #[cfg(feature="swizzle")]
+    fn x(&self) -> Self {
+        return *self;
+    }
+
+    #[cfg(feature="swizzle")]
+    fn xx(&self) -> Vector<Self, 2> {
+        return Vector::<Self, 2>::from_scalar(*self);
+    }
+
+    #[cfg(feature="swizzle")]
+    fn xxx(&self) -> Vector<Self, 3> {
+        return Vector::<Self, 3>::from_scalar(*self);
+    }
+
+    #[cfg(feature="swizzle")]
+    fn xxxx(&self) -> Vector<Self, 4> {
+        return Vector::<Self, 4>::from_scalar(*self);
+    }
 }
 
 // F64
@@ -222,6 +256,26 @@ impl RealNumber for f64 {
 
     fn real_get_one() -> Self {
         1f64
+    }
+
+    #[cfg(feature="swizzle")]
+    fn x(&self) -> Self {
+        return *self;
+    }
+
+    #[cfg(feature="swizzle")]
+    fn xx(&self) -> Vector<Self, 2> {
+        return Vector::<Self, 2>::from_scalar(*self);
+    }
+
+    #[cfg(feature="swizzle")]
+    fn xxx(&self) -> Vector<Self, 3> {
+        return Vector::<Self, 3>::from_scalar(*self);
+    }
+
+    #[cfg(feature="swizzle")]
+    fn xxxx(&self) -> Vector<Self, 4> {
+        return Vector::<Self, 4>::from_scalar(*self);
     }
 }
 
