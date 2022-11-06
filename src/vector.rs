@@ -187,12 +187,16 @@ vector_per_comp_func!(floor, =, real_floor);
 vector_per_comp_func!(ceil, =, real_ceil);
 vector_per_comp_func!(round, =, real_round);
 vector_per_comp_func!(saturate, =, real_saturate);
+vector_per_comp_func!(sqrt, =, real_sqrt);
+vector_per_comp_func!(sin, =, real_sin);
+vector_per_comp_func!(cos, =, real_cos);
+vector_per_comp_func!(tan, =, real_tan);
 
 
 //
 // Real Math Traits
 //
-macro_rules! real_op_assign {
+macro_rules! vector_by_real_op_assign {
     ($op:ident, $func:ident, $call:tt) => {
         impl<T: RealNumber, const COUNT: usize> $op<T> for Vector<T, COUNT> {
             fn $func(&mut self, rhs: T) {
@@ -204,7 +208,7 @@ macro_rules! real_op_assign {
     };
 }
 
-macro_rules! real_op {
+macro_rules! vector_by_real_op {
     ($op:ident, $func:ident, $call:tt) => {
         impl<T: RealNumber, const COUNT: usize> $op<T> for Vector<T, COUNT> {
             type Output = Self;
@@ -222,15 +226,15 @@ macro_rules! real_op {
     };
 }
 
-real_op_assign!(AddAssign, add_assign, +=);
-real_op_assign!(SubAssign, sub_assign, -=);
-real_op_assign!(MulAssign, mul_assign, *=);
-real_op_assign!(DivAssign, div_assign, /=);
+vector_by_real_op_assign!(AddAssign, add_assign, +=);
+vector_by_real_op_assign!(SubAssign, sub_assign, -=);
+vector_by_real_op_assign!(MulAssign, mul_assign, *=);
+vector_by_real_op_assign!(DivAssign, div_assign, /=);
 
-real_op!(Add, add, +=);
-real_op!(Sub, sub, -=);
-real_op!(Mul, mul, *=);
-real_op!(Div, div, /=);
+vector_by_real_op!(Add, add, +=);
+vector_by_real_op!(Sub, sub, -=);
+vector_by_real_op!(Mul, mul, *=);
+vector_by_real_op!(Div, div, /=);
 
 //
 // Vector math traits

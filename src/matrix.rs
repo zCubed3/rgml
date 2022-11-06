@@ -328,8 +328,8 @@ pub mod common {
             let one = T::real_get_one();
             let two = one + one;
 
-            let vertical_fov = fov_y * T::real_deg_to_rad();
-            let half_fov = fov_y;
+            let vertical_fov = (fov_y / two).real_to_radians();
+            let half_fov = vertical_fov.real_tan();
 
             let mut m = Self::default();
 
@@ -339,7 +339,7 @@ pub mod common {
             m[2][3] = -one;
             m[3][2] = -(two * z_far * z_near) / (z_far - z_near);
 
-            m
+            m.transpose()
         }
 
         pub fn translate(translation: Vector<T, 3>) -> Self {

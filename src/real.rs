@@ -10,8 +10,8 @@ use crate::vector::*;
 ///
 /// This trait is already implemented for [f32] and [f64]
 pub trait RealNumber:
-Add<Output=Self> + Sub<Output=Self> + Mul<Output=Self> + Div<Output=Self> + Neg<Output=Self> + // Arithmetic
-AddAssign + SubAssign + MulAssign + DivAssign + // Arithmetic with assign
+Add<Output=Self> + Sub<Output=Self> + Mul<Output=Self> + Div<Output=Self> + Neg<Output=Self> + // Arithmetic with self
+AddAssign + SubAssign + MulAssign + DivAssign + // Arithmetic with assign with self
 PartialEq + PartialOrd + // Equality
 Clone + Copy + Default + Display // Usability
     where Self: Sized {
