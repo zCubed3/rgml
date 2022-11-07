@@ -54,6 +54,10 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return sum;
     }
 
+    pub fn magnitude_sqr(&self) -> T {
+        return self.dot(*self);
+    }
+
     /// The length of this [Vector], not to be confused with [Vector::sum]!
     pub fn magnitude(&self) -> T {
         return self.dot(*self).real_sqrt();
@@ -284,6 +288,54 @@ vector_op!(Sub, sub, -=);
 vector_op!(Mul, mul, *=);
 vector_op!(Div, div, /=);
 
+//
+// Boolean ops
+//
+impl<T: RealNumber, const COUNT: usize> PartialOrd for Vector<T, COUNT> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        None
+    }
+
+    fn gt(&self, other: &Self) -> bool {
+        for c in 0..COUNT {
+            if self[c] > other[c] {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    fn ge(&self, other: &Self) -> bool {
+        for c in 0..COUNT {
+            if self[c] >= other[c] {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    fn lt(&self, other: &Self) -> bool {
+        for c in 0..COUNT {
+            if self[c] < other[c] {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    fn le(&self, other: &Self) -> bool {
+        for c in 0..COUNT {
+            if self[c] <= other[c] {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
 //
 // Vector negation
 //
