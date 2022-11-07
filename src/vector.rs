@@ -14,16 +14,21 @@ pub mod swizzle_gen;
 #[cfg(feature="swizzle")]
 pub use swizzle_gen::*;
 
+#[cfg(feature="serialization")]
+use serde::Serialize;
+
 ///
 /// Configurable vector type for usage with Vector math
 ///
 /// A vector is simply a wrapper for an array of the given real type and count
 /// Supports any real that can be implemented as a [Real] trait
 ///
+#[cfg_attr(feature="serialization", derive(Serialize))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Vector<T: RealNumber, const COUNT: usize> {
     /// The underlying array of the vector, the vector dereferences into this array
+    #[cfg_attr(feature="serialization", serde(with = "serde_arrays"))]
     pub underlying: [T; COUNT],
 }
 

@@ -1,19 +1,27 @@
 use std::cmp::*;
 use std::fmt::*;
 use std::ops::*;
-use crate::prelude::Vector2;
 use crate::vector::*;
+
+#[cfg(feature="serde")]
+use serde::Serialize;
 
 // https://www.worthe-it.co.za/blog/2017-01-15-aliasing-traits-in-rust.html
 
 /// Strict trait for constraining what types can be used for math
 ///
 /// This trait is already implemented for [f32] and [f64]
+#[cfg(feature="serialization")]
+pub trait DataBounds: Serialize {}
+
+#[cfg(not(feature="serialization"))]
+pub trait DataBounds {}
+
 pub trait RealNumber:
 Add<Output=Self> + Sub<Output=Self> + Mul<Output=Self> + Div<Output=Self> + Neg<Output=Self> + // Arithmetic with self
 AddAssign + SubAssign + MulAssign + DivAssign + // Arithmetic with assign with self
 PartialEq + PartialOrd + // Equality
-Clone + Copy + Default + Display // Usability
+Clone + Copy + Default + Display + DataBounds // Usability
     where Self: Sized {
     fn real_sqrt(&self) -> Self;
 
@@ -66,6 +74,7 @@ Clone + Copy + Default + Display // Usability
 //
 
 // F32
+impl DataBounds for f32 {}
 impl RealNumber for f32 {
     fn real_sqrt(&self) -> Self {
         self.sqrt()
@@ -173,6 +182,7 @@ impl RealNumber for f32 {
 }
 
 // F64
+impl DataBounds for f64 {}
 impl RealNumber for f64 {
     fn real_sqrt(&self) -> Self {
         self.sqrt()
