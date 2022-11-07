@@ -88,6 +88,26 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 
         return a;
     }
+
+    pub fn step(&self, rhs: Self) -> Self {
+        let mut a = Self::default();
+
+        for c in 0..COUNT {
+            a[c] = if self[c] < rhs[c] { T::real_zero() } else { T::real_one() };
+        }
+
+        return a;
+    }
+
+    pub fn sign(&self) -> Self {
+        let mut a = Self::default();
+
+        for c in 0..COUNT {
+            a[c] = if self[c] < T::real_zero() { -T::real_one() } else { T::real_one() };
+        }
+
+        return a;
+    }
 }
 
 //
@@ -437,7 +457,7 @@ pub mod common {
         }
 
         pub fn reflect(&self, normal: Self) -> Self {
-            return *self - normal * self.dot(normal) * (T::real_get_one() + T::real_get_one());
+            return *self - normal * self.dot(normal) * (T::real_one() + T::real_one());
         }
     }
 

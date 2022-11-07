@@ -54,7 +54,8 @@ Clone + Copy + Default + Display + DataBounds // Usability
 
     fn real_pi() -> Self;
 
-    fn real_get_one() -> Self;
+    fn real_zero() -> Self;
+    fn real_one() -> Self;
 
     #[cfg(feature="swizzle")]
     fn x(&self) -> Self;
@@ -156,8 +157,12 @@ impl RealNumber for f32 {
         std::f32::consts::PI
     }
 
-    fn real_get_one() -> Self {
-        1f32
+    fn real_zero() -> Self {
+        0.0
+    }
+
+    fn real_one() -> Self {
+        1.0
     }
 
     #[cfg(feature="swizzle")]
@@ -264,8 +269,12 @@ impl RealNumber for f64 {
         std::f64::consts::PI
     }
 
-    fn real_get_one() -> Self {
-        1f64
+    fn real_zero() -> Self {
+        0.0
+    }
+
+    fn real_one() -> Self {
+        1.0
     }
 
     #[cfg(feature="swizzle")]

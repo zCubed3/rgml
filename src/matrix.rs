@@ -39,7 +39,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HE
                 break;
             }
 
-            array[c][c] = T::real_get_one();
+            array[c][c] = T::real_one();
         }
 
         return Self { underlying: array };
@@ -214,7 +214,7 @@ pub mod common {
 
         pub fn inverse(&self) -> Self {
             let mut i = Self::default();
-            let d = T::real_get_one() / self.determinant();
+            let d = T::real_one() / self.determinant();
 
             i[0][0] = self[1][1];
             i[0][1] = -self[0][1];
@@ -240,7 +240,7 @@ pub mod common {
 
         pub fn inverse(&self) -> Self {
             let mut i = Self::default();
-            let d = T::real_get_one() / self.determinant();
+            let d = T::real_one() / self.determinant();
 
             i[0][0] = (self[1][1] * self[2][2] - self[2][1] * self[1][2]) * d;
             i[1][0] = -(self[1][0] * self[2][2] - self[2][0] * self[1][2]) * d;
@@ -308,7 +308,7 @@ pub mod common {
             let inv2 = (vec0 * fac1 - vec1 * fac3 + vec3 * fac5);
             let inv3 = (vec0 * fac2 - vec1 * fac4 + vec2 * fac5);
 
-            let one = T::real_get_one();
+            let one = T::real_one();
 
             let sign_a = Vector::<T, 4>::new(one, -one, one, -one);
             let sign_b = -sign_a;
@@ -325,7 +325,7 @@ pub mod common {
         }
 
         pub fn perspective(fov_y: T, aspect: T, z_near: T, z_far: T) -> Self {
-            let one = T::real_get_one();
+            let one = T::real_one();
             let two = one + one;
 
             let vertical_fov = (fov_y / two).real_to_radians();
@@ -385,7 +385,7 @@ pub mod common {
         }
 
         pub fn look_at(direction: Vector<T, 3>) -> Self {
-            let up = Vector::<T, 3>::new(T::default(), -T::real_get_one(), T::default());
+            let up = Vector::<T, 3>::new(T::default(), -T::real_one(), T::default());
 
             let r_right = direction.cross(up).normalize();
             let r_up = direction.cross(r_right).normalize();
