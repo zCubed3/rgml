@@ -1,7 +1,9 @@
 # Prism Math Library
 
 ### CI Status
-![Cargo Test](https://github.com/zCubed3/prism_math/actions/workflows/rust_test.yml/badge.svg?branch=main)
+![Linux CI](https://github.com/zCubed3/prism_math/actions/workflows/ci_linux.yml/badge.svg?branch=main)
+
+![Windows CI](https://github.com/zCubed3/prism_math/actions/workflows/ci_windows.yml/badge.svg?branch=main)
 
 ### What is this?
 * This is a custom math library for the [Prism](https://github.com/zCubed3/prism) CPU renderer!

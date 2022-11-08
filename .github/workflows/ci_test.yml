@@ -1,0 +1,36 @@
+name: CI Dummy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+
+    - name: Create dummies
+      run: bash ./scripts/dummy_ci.sh
+
+    - name: Bundle CI Results
+      run: bash ./scripts/bundle_ci.sh
+      env:
+        CI_DLIB: so
+        CI_SLIB: a
+        CI_PFIX: lib
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: libraries
+        path: |
+          ci_build/*
