@@ -1,179 +1,140 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace PrismMath {
-    public struct Vector3 {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] backing;
+using PrismMath.Internal;
 
+namespace PrismMath
+{
+    public partial struct Vector3
+    {
         public Vector3()
         {
-            backing = new float[3] { 0F, 0F, 0F };
+            backing = new float[] { 0, 0, 0 };
         }
 
-        public Vector3(float scalar)
+        public Vector3(float x, float y, float z)
         {
-            backing = new float[3] { scalar, scalar, scalar };
+            backing = new float[] { x, y, z };
         }
 
-        public Vector3(float x, float y, float z) 
+        public override string ToString()
         {
-            backing = new float[3] { x, y, z };
+            return $"{backing[0]}, {backing[1]}, {backing[2]}";
         }
 
         public float this[int i]
         {
-            get 
+            get
             {
-                if (backing == null)
-                    throw new System.NullReferenceException("Backing was null! Something has seriously gone wrong!");
+                if (i < 0 || i > 2)
+                    throw new ArgumentOutOfRangeException("Index was out of range!");
 
-                if (i > 2 || i < 0)
-                    throw new System.IndexOutOfRangeException("Vector indexer was out of range!");
-
-                return backing[i]; 
+                return backing[i];
             }
-            set 
+            set
             {
-                if (backing == null)
-                    throw new System.NullReferenceException("Backing was null! Something has seriously gone wrong!");
+                if (i < 0 || i > 2)
+                    throw new ArgumentOutOfRangeException("Index was out of range!");
 
-                if (i > 2 || i < 0)
-                    throw new System.IndexOutOfRangeException("Vector indexer was out of range!");
-
-                backing[i] = value; 
+                backing[i] = value;
             }
         }
 
-        public float X
+        public static Vector3 operator +(Vector3 lhs, Vector3 rhs) => Vector3F32.vec3_add(lhs, rhs);
+        public static Vector3 operator -(Vector3 lhs, Vector3 rhs) => Vector3F32.vec3_sub(lhs, rhs);
+        public static Vector3 operator *(Vector3 lhs, Vector3 rhs) => Vector3F32.vec3_mul(lhs, rhs);
+        public static Vector3 operator /(Vector3 lhs, Vector3 rhs) => Vector3F32.vec3_div(lhs, rhs);
+
+        public static implicit operator Vector3(Vector2 i) => Vector3F32.vec3_from_vec2(i);
+        public static implicit operator Vector3(Vector4 i) => Vector3F32.vec3_from_vec4(i);
+
+        public Vector3 Normalized => Vector3F32.vec3_normalize(this);
+        public Vector3 Abs => Vector3F32.vec3_abs(this);
+        public Vector3 Floor => Vector3F32.vec3_floor(this);
+        public Vector3 Ceil => Vector3F32.vec3_ceil(this);
+        public Vector3 Round => Vector3F32.vec3_round(this);
+        public Vector3 Saturate => Vector3F32.vec3_saturate(this);
+        public Vector3 Sqrt => Vector3F32.vec3_sqrt(this);
+        public Vector3 Sin => Vector3F32.vec3_sin(this);
+        public Vector3 Cos => Vector3F32.vec3_cos(this);
+        public Vector3 Tan => Vector3F32.vec3_tan(this);
+        public Vector3 Sign => Vector3F32.vec3_sign(this);
+        public float Sum => Vector3F32.vec3_sum(this);
+        public float Magnitude => Vector3F32.vec3_magnitude(this);
+        public float MagnitudeSqr => Vector3F32.vec3_magnitude_sqr(this);
+
+        public Vector3 Min(Vector3 rhs) => Vector3F32.vec3_min(this, rhs);
+        public Vector3 Max(Vector3 rhs) => Vector3F32.vec3_max(this, rhs);
+        public Vector3 Pow(Vector3 rhs) => Vector3F32.vec3_pow(this, rhs);
+        public Vector3 Cross(Vector3 rhs) => Vector3F32.vec3_cross(this, rhs);
+        public Vector3 Reflect(Vector3 rhs) => Vector3F32.vec3_reflect(this, rhs);
+        public float Dot(Vector3 rhs) => Vector3F32.vec3_dot(this, rhs);
+        public Vector3 Lerp(Vector3 to, float alpha) => Vector3F32.vec3_lerp(this, to, alpha);
+    }
+
+    public partial struct DVector3
+    {
+        public DVector3()
         {
-            get => this[0];
-            set => this[0] = value;
+            backing = new double[] { 0, 0, 0 };
         }
 
-        public float Y
+        public DVector3(double x, double y, double z)
         {
-            get => this[1];
-            set => this[1] = value;
+            backing = new double[] { x, y, z };
         }
-
-        public float Z
-        {
-            get => this[2];
-            set => this[2] = value;
-        }
-
-        public static Vector3 operator +(Vector3 lhs, Vector3 rhs) => Vector3Internals.vec3_add(lhs, rhs);
-        public static Vector3 operator -(Vector3 lhs, Vector3 rhs) => Vector3Internals.vec3_sub(lhs, rhs);
-        public static Vector3 operator *(Vector3 lhs, Vector3 rhs) => Vector3Internals.vec3_mul(lhs, rhs);
-        public static Vector3 operator /(Vector3 lhs, Vector3 rhs) => Vector3Internals.vec3_div(lhs, rhs);
-
-        public Vector3 Cross(Vector3 rhs) => Vector3Internals.vec3_cross(this, rhs);
-        public Vector3 Min(Vector3 rhs) => Vector3Internals.vec3_min(this, rhs);
-        public Vector3 Max(Vector3 rhs) => Vector3Internals.vec3_max(this, rhs);
-        public float Dot(Vector3 rhs) => Vector3Internals.vec3_dot(this, rhs);
-        public Vector3 Abs() => Vector3Internals.vec3_abs(this);
-        public Vector3 Sin() => Vector3Internals.vec3_sin(this);
-        public Vector3 Cos() => Vector3Internals.vec3_cos(this);
-        public Vector3 Tan() => Vector3Internals.vec3_tan(this);
-        public float Sum() => Vector3Internals.vec3_sum(this);
-        public float Magnitude() => Vector3Internals.vec3_magnitude(this);
-        public float MagnitudeSqr() => Vector3Internals.vec3_magnitude_sqr(this);
-        public Vector3 Saturate() => Vector3Internals.vec3_saturate(this);
-        public Vector3 Sign() => Vector3Internals.vec3_sign(this);
-        public Vector3 Lerp(Vector3 to, float alpha) => Vector3Internals.vec3_lerp(this, to, alpha);
-        public Vector3 Floor() => Vector3Internals.vec3_floor(this);
-        public Vector3 Ceil() => Vector3Internals.vec3_ceil(this);
-        public Vector3 Round() => Vector3Internals.vec3_round(this);
-        public Vector3 Sqrt() => Vector3Internals.vec3_sqrt(this);
-        public Vector3 Pow(Vector3 exp) => Vector3Internals.vec3_pow(this, exp);
-        public Vector3 Step(Vector3 edge) => Vector3Internals.vec3_step(this, edge);
 
         public override string ToString()
         {
-            return $"{X}, {Y}, {Z}";
+            return $"{backing[0]}, {backing[1]}, {backing[2]}";
         }
-    }
 
-    internal class Vector3Internals {
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_new(float x, float y, float z);
+        public double this[int i]
+        {
+            get
+            {
+                if (i < 0 || i > 2)
+                    throw new ArgumentOutOfRangeException("Index was out of range!");
 
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_zero();
+                return backing[i];
+            }
+            set
+            {
+                if (i < 0 || i > 2)
+                    throw new ArgumentOutOfRangeException("Index was out of range!");
 
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_add(Vector3 lhs, Vector3 rhs);
+                backing[i] = value;
+            }
+        }
 
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_sub(Vector3 lhs, Vector3 rhs);
+        public static DVector3 operator +(DVector3 lhs, DVector3 rhs) => Vector3F64.dvec3_add(lhs, rhs);
+        public static DVector3 operator -(DVector3 lhs, DVector3 rhs) => Vector3F64.dvec3_sub(lhs, rhs);
+        public static DVector3 operator *(DVector3 lhs, DVector3 rhs) => Vector3F64.dvec3_mul(lhs, rhs);
+        public static DVector3 operator /(DVector3 lhs, DVector3 rhs) => Vector3F64.dvec3_div(lhs, rhs);
 
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_mul(Vector3 lhs, Vector3 rhs);
+        public static implicit operator DVector3(DVector2 i) => Vector3F64.dvec3_from_vec2(i);
+        public static implicit operator DVector3(DVector4 i) => Vector3F64.dvec3_from_vec4(i);
 
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_div(Vector3 lhs, Vector3 rhs);
+        public DVector3 Normalized => Vector3F64.dvec3_normalize(this);
+        public DVector3 Abs => Vector3F64.dvec3_abs(this);
+        public DVector3 Floor => Vector3F64.dvec3_floor(this);
+        public DVector3 Ceil => Vector3F64.dvec3_ceil(this);
+        public DVector3 Round => Vector3F64.dvec3_round(this);
+        public DVector3 Saturate => Vector3F64.dvec3_saturate(this);
+        public DVector3 Sqrt => Vector3F64.dvec3_sqrt(this);
+        public DVector3 Sin => Vector3F64.dvec3_sin(this);
+        public DVector3 Cos => Vector3F64.dvec3_cos(this);
+        public DVector3 Tan => Vector3F64.dvec3_tan(this);
+        public DVector3 Sign => Vector3F64.dvec3_sign(this);
+        public double Sum => Vector3F64.dvec3_sum(this);
+        public double Magnitude => Vector3F64.dvec3_magnitude(this);
+        public double MagnitudeSqr => Vector3F64.dvec3_magnitude_sqr(this);
 
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_cross(Vector3 lhs, Vector3 rhs);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_min(Vector3 lhs, Vector3 rhs);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_max(Vector3 lhs, Vector3 rhs);
-
-        [DllImport("prism_math")]
-        internal static extern float vec3_dot(Vector3 lhs, Vector3 rhs);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_normalize(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_abs(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_sin(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_cos(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_tan(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern float vec3_sum(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern float vec3_magnitude(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern float vec3_magnitude_sqr(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_saturate(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_sign(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_lerp(Vector3 from, Vector3 to, float alpha);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_step(Vector3 lhs, Vector3 rhs);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_pow(Vector3 lhs, Vector3 rhs);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_floor(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_ceil(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_round(Vector3 v);
-
-        [DllImport("prism_math")]
-        internal static extern Vector3 vec3_sqrt(Vector3 v);
+        public DVector3 Min(DVector3 rhs) => Vector3F64.dvec3_min(this, rhs);
+        public DVector3 Max(DVector3 rhs) => Vector3F64.dvec3_max(this, rhs);
+        public DVector3 Pow(DVector3 rhs) => Vector3F64.dvec3_pow(this, rhs);
+        public DVector3 Cross(DVector3 rhs) => Vector3F64.dvec3_cross(this, rhs);
+        public DVector3 Reflect(DVector3 rhs) => Vector3F64.dvec3_reflect(this, rhs);
+        public double Dot(DVector3 rhs) => Vector3F64.dvec3_dot(this, rhs);
+        public DVector3 Lerp(DVector3 to, double alpha) => Vector3F64.dvec3_lerp(this, to, alpha);
     }
 }

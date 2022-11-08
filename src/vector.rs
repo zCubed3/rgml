@@ -485,6 +485,10 @@ pub mod common {
 
             return o;
         }
+
+        pub fn identity() -> Self {
+            return Self::new(T::real_zero(), T::real_zero(), T::real_zero(), T::real_one());
+        }
     }
 
     /// Quaternion (same type as [Vector4])

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/python
 
 # Generates a swizzle macro block for use in the prism math library
 # The resulting file is swizzle.gen.rs

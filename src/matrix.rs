@@ -19,12 +19,12 @@ use super::real::RealNumber;
 #[repr(C)]
 pub struct Matrix<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> {
     /// The underlying array of the matrix, the matrix dereferences into this array
-    pub underlying: [[T; WIDTH]; HEIGHT],
+    pub backing: [[T; WIDTH]; HEIGHT],
 }
 
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HEIGHT> {
     pub fn from_array(array: [[T; WIDTH]; HEIGHT]) -> Self {
-        Self { underlying: array }
+        Self { backing: array }
     }
 
     /// Provides an identity matrix (this works best with evenly shaped [Matrix] types!)
@@ -42,7 +42,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HE
             array[c][c] = T::real_one();
         }
 
-        return Self { underlying: array };
+        return Self { backing: array };
     }
 
     /// Transposes the given matrix
@@ -70,13 +70,13 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Deref for Matrix<T,
     type Target = [[T; WIDTH]; HEIGHT];
 
     fn deref(&self) -> &Self::Target {
-        &self.underlying
+        &self.backing
     }
 }
 
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> DerefMut for Matrix<T, WIDTH, HEIGHT> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.underlying
+        &mut self.backing
     }
 }
 
@@ -112,7 +112,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Display for Matrix<
 //
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Default for Matrix<T, WIDTH, HEIGHT> {
     fn default() -> Self {
-        Self { underlying: [[T::default(); WIDTH]; HEIGHT] }
+        Self { backing: [[T::default(); WIDTH]; HEIGHT] }
     }
 }
 
@@ -263,7 +263,7 @@ pub mod common {
 
     impl<T: RealNumber> Matrix<T, 4, 4> {
         pub fn from_vectors(r0: Vector<T, 4>, r1: Vector<T, 4>, r2: Vector<T, 4>, r3: Vector<T, 4>) -> Self {
-            Self { underlying: [*r0, *r1, *r2, *r3] }
+            Self { backing: [*r0, *r1, *r2, *r3] }
         }
 
         pub fn inverse(&self) -> Self {
@@ -342,7 +342,7 @@ pub mod common {
             m.transpose()
         }
 
-        pub fn translate(translation: Vector<T, 3>) -> Self {
+        pub fn translation(translation: Vector<T, 3>) -> Self {
             let mut m = Self::identity();
 
             m[0][3] = translation[0];

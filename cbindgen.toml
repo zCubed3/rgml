@@ -73,9 +73,12 @@ renaming_overrides_prefixing = false
 "Vector3F64"="dvec3_t"
 "Vector4F32"="vec4_t"
 "Vector4F64"="dvec4_t"
+"QuaternionF32"="quat_t"
+"QuaternionF64"="dquat_t"
+"Matrix4x4F32"="mat4_t"
+"Matrix4x4F64"="dmat4_t"
 
 [export.body]
-
 
 [export.mangle]
 
