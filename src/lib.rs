@@ -6,6 +6,8 @@ pub mod matrix;
 
 pub mod common;
 
+pub mod ffi;
+
 pub mod prelude {
     //
     // Matrix types

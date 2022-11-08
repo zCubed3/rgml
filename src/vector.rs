@@ -29,18 +29,18 @@ use serde::Serialize;
 pub struct Vector<T: RealNumber, const COUNT: usize> {
     /// The underlying array of the vector, the vector dereferences into this array
     #[cfg_attr(feature="serialization", serde(with = "serde_arrays"))]
-    pub underlying: [T; COUNT],
+    pub backing: [T; COUNT],
 }
 
 impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
     /// Creates a new [Vector] by copying the given array into the backing array
     pub fn from_array(array: [T; COUNT]) -> Self {
-        Vector { underlying: array }
+        Vector { backing: array }
     }
 
     /// Creates a new [Vector] by copying the provided value into each element
-    pub fn from_scalar(value: T) -> Self {
-        Vector { underlying: [value; COUNT] }
+    pub extern "C" fn from_scalar(value: T) -> Self {
+        Vector { backing: [value; COUNT] }
     }
 
     /// Returns the sum of all components ([Real]) within this [Vector]
@@ -115,7 +115,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 //
 impl<T: RealNumber, const COUNT: usize> Default for Vector<T, COUNT> {
     fn default() -> Self {
-        Self { underlying: [T::default(); COUNT] }
+        Self { backing: [T::default(); COUNT] }
     }
 }
 
@@ -127,13 +127,13 @@ impl<T: RealNumber, const COUNT: usize> Deref for Vector<T, COUNT> {
     type Target = [T; COUNT];
 
     fn deref(&self) -> &Self::Target {
-        &self.underlying
+        &self.backing
     }
 }
 
 impl<T: RealNumber, const COUNT: usize> DerefMut for Vector<T, COUNT> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.underlying
+        &mut self.backing
     }
 }
 
@@ -159,7 +159,7 @@ impl<T: RealNumber, const COUNT: usize> Display for Vector<T, COUNT> {
         write!(f, "<").expect("Failed to write!");
 
         let mut first = true;
-        for c in self.underlying {
+        for c in self.backing {
             if !first {
                 write!(f, ", ").expect("Failed to write!");
             }
