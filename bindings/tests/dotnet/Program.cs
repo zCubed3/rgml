@@ -8,12 +8,27 @@ namespace PrismMathTest
     {
         static void Main(string[] args)
         {
-            Vector3 vA = new Vector3(0, 0, 0);
-            Vector3 vB = new Vector3(1, 1, 1);
+            Vector3 vA = new Vector3(0, 0, 1);
+            Vector3 vB = new Vector3(0, 0, 1);
 
-            Vector3 v3 = vA + vB;
+            // Calls all possible methods for Vector3
+            _ = vA + vB;
+            _ = vA - vB;
+            _ = vA * vB;
+            _ = vA / vB;
 
-            Console.WriteLine($"{v3[0]}, {v3[1]}, {v3[2]}");
+            _ = vA.Dot(vB);
+            _ = vA.Min(vB);
+            _ = vA.Max(vB);
+            _ = vA.Cross(vB);
+
+            _ = vA.Abs();
+            _ = vA.Sin();
+            _ = vA.Cos();
+            _ = vA.Tan();
+            _ = vA.Sum();
+
+            Console.WriteLine("PASS!");
         }
     }
 }
