@@ -262,6 +262,24 @@ macro_rules! vector_by_real_op {
                 return prod;
             }
         }
+    }
+}
+
+macro_rules! real_by_vector_op {
+    ($op:ident, $func:ident, $call:tt, $tipe:ty) => {
+        impl<const COUNT: usize> $op<Vector<$tipe, COUNT>> for $tipe {
+            type Output = Vector<$tipe, COUNT>;
+
+            fn $func(self, rhs: Vector<$tipe, COUNT>) -> Self::Output {
+                let mut prod = Vector::<$tipe, COUNT>::default();
+
+                for c in 0 .. COUNT {
+                    prod[c] $call self;
+                }
+
+                return prod;
+            }
+        }
     };
 }
 
@@ -274,6 +292,18 @@ vector_by_real_op!(Add, add, +=);
 vector_by_real_op!(Sub, sub, -=);
 vector_by_real_op!(Mul, mul, *=);
 vector_by_real_op!(Div, div, /=);
+
+real_by_vector_op!(Add, add, +=, f32);
+real_by_vector_op!(Sub, sub, -=, f32);
+real_by_vector_op!(Mul, mul, *=, f32);
+real_by_vector_op!(Div, div, /=, f32);
+
+real_by_vector_op!(Add, add, +=, f64);
+real_by_vector_op!(Sub, sub, -=, f64);
+real_by_vector_op!(Mul, mul, *=, f64);
+real_by_vector_op!(Div, div, /=, f64);
+
+
 
 //
 // Vector math traits
