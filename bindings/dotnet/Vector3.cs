@@ -66,6 +66,7 @@ namespace PrismMath
         public float Sum => Vector3F32.vec3_sum(this);
         public float Magnitude => Vector3F32.vec3_magnitude(this);
         public float MagnitudeSqr => Vector3F32.vec3_magnitude_sqr(this);
+        public Vector3 Fract => Vector3F32.vec3_fract(this);
 
         public float[] Backing => backing;
 
@@ -140,6 +141,7 @@ namespace PrismMath
         public double Sum => Vector3F64.dvec3_sum(this);
         public double Magnitude => Vector3F64.dvec3_magnitude(this);
         public double MagnitudeSqr => Vector3F64.dvec3_magnitude_sqr(this);
+        public DVector3 Fract => Vector3F64.dvec3_fract(this);
 
         public double[] Backing => backing;
 

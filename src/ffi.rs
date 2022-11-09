@@ -1,5 +1,5 @@
 //
-// Generated at 2022-11-09 20:03:00.640082 by generate_ffi.py
+// Generated at 2022-11-09 22:02:13.975354 by generate_ffi.py
 //
 
 #![allow(clippy::needless_return)]
@@ -82,6 +82,11 @@ pub extern "C" fn vec2_tan(i: Vector2F32) -> Vector2F32 {
 #[no_mangle]
 pub extern "C" fn vec2_sign(i: Vector2F32) -> Vector2F32 {
 	return i.sign();
+}
+
+#[no_mangle]
+pub extern "C" fn vec2_fract(i: Vector2F32) -> Vector2F32 {
+	return i.fract();
 }
 
 #[no_mangle]
@@ -225,6 +230,11 @@ pub extern "C" fn vec3_tan(i: Vector3F32) -> Vector3F32 {
 #[no_mangle]
 pub extern "C" fn vec3_sign(i: Vector3F32) -> Vector3F32 {
 	return i.sign();
+}
+
+#[no_mangle]
+pub extern "C" fn vec3_fract(i: Vector3F32) -> Vector3F32 {
+	return i.fract();
 }
 
 #[no_mangle]
@@ -386,6 +396,11 @@ pub extern "C" fn vec4_sign(i: Vector4F32) -> Vector4F32 {
 }
 
 #[no_mangle]
+pub extern "C" fn vec4_fract(i: Vector4F32) -> Vector4F32 {
+	return i.fract();
+}
+
+#[no_mangle]
 pub extern "C" fn vec4_sum(i: Vector4F32) -> f32 {
 	return i.sum();
 }
@@ -534,6 +549,11 @@ pub extern "C" fn dvec2_sign(i: Vector2F64) -> Vector2F64 {
 }
 
 #[no_mangle]
+pub extern "C" fn dvec2_fract(i: Vector2F64) -> Vector2F64 {
+	return i.fract();
+}
+
+#[no_mangle]
 pub extern "C" fn dvec2_sum(i: Vector2F64) -> f64 {
 	return i.sum();
 }
@@ -674,6 +694,11 @@ pub extern "C" fn dvec3_tan(i: Vector3F64) -> Vector3F64 {
 #[no_mangle]
 pub extern "C" fn dvec3_sign(i: Vector3F64) -> Vector3F64 {
 	return i.sign();
+}
+
+#[no_mangle]
+pub extern "C" fn dvec3_fract(i: Vector3F64) -> Vector3F64 {
+	return i.fract();
 }
 
 #[no_mangle]
@@ -832,6 +857,11 @@ pub extern "C" fn dvec4_tan(i: Vector4F64) -> Vector4F64 {
 #[no_mangle]
 pub extern "C" fn dvec4_sign(i: Vector4F64) -> Vector4F64 {
 	return i.sign();
+}
+
+#[no_mangle]
+pub extern "C" fn dvec4_fract(i: Vector4F64) -> Vector4F64 {
+	return i.fract();
 }
 
 #[no_mangle]

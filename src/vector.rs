@@ -108,6 +108,16 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 
         return a;
     }
+
+    pub fn fract(&self) -> Self {
+        let mut a = Self::default();
+
+        for c in 0..COUNT {
+            a[c] = self[c] - self[c].real_floor();
+        }
+
+        return a;
+    }
 }
 
 //

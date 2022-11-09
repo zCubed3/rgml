@@ -1,5 +1,5 @@
 //
-// Generated at 2022-11-09 20:03:00.647080 by generate_ffi.py
+// Generated at 2022-11-09 22:02:13.984354 by generate_ffi.py
 //
 
 using System.Runtime.InteropServices;
@@ -50,6 +50,9 @@ namespace PrismMath.Internal {
 
 		[DllImport("prism_math")]
 		internal static extern Vector2 vec2_sign(Vector2 i);
+
+		[DllImport("prism_math")]
+		internal static extern Vector2 vec2_fract(Vector2 i);
 
 		[DllImport("prism_math")]
 		internal static extern float vec2_sum(Vector2 i);
@@ -106,6 +109,7 @@ namespace PrismMath.Internal {
 		// public Vector2 Cos() => Vector2F32.vec2_cos(this);
 		// public Vector2 Tan() => Vector2F32.vec2_tan(this);
 		// public Vector2 Sign() => Vector2F32.vec2_sign(this);
+		// public Vector2 Fract() => Vector2F32.vec2_fract(this);
 		// public float Sum() => Vector2F32.vec2_sum(this);
 		// public float Magnitude() => Vector2F32.vec2_magnitude(this);
 		// public float Magnitude_sqr() => Vector2F32.vec2_magnitude_sqr(this);
@@ -165,6 +169,9 @@ namespace PrismMath.Internal {
 
 		[DllImport("prism_math")]
 		internal static extern Vector3 vec3_sign(Vector3 i);
+
+		[DllImport("prism_math")]
+		internal static extern Vector3 vec3_fract(Vector3 i);
 
 		[DllImport("prism_math")]
 		internal static extern float vec3_sum(Vector3 i);
@@ -227,6 +234,7 @@ namespace PrismMath.Internal {
 		// public Vector3 Cos() => Vector3F32.vec3_cos(this);
 		// public Vector3 Tan() => Vector3F32.vec3_tan(this);
 		// public Vector3 Sign() => Vector3F32.vec3_sign(this);
+		// public Vector3 Fract() => Vector3F32.vec3_fract(this);
 		// public float Sum() => Vector3F32.vec3_sum(this);
 		// public float Magnitude() => Vector3F32.vec3_magnitude(this);
 		// public float Magnitude_sqr() => Vector3F32.vec3_magnitude_sqr(this);
@@ -293,6 +301,9 @@ namespace PrismMath.Internal {
 		internal static extern Vector4 vec4_sign(Vector4 i);
 
 		[DllImport("prism_math")]
+		internal static extern Vector4 vec4_fract(Vector4 i);
+
+		[DllImport("prism_math")]
 		internal static extern float vec4_sum(Vector4 i);
 
 		[DllImport("prism_math")]
@@ -351,6 +362,7 @@ namespace PrismMath.Internal {
 		// public Vector4 Cos() => Vector4F32.vec4_cos(this);
 		// public Vector4 Tan() => Vector4F32.vec4_tan(this);
 		// public Vector4 Sign() => Vector4F32.vec4_sign(this);
+		// public Vector4 Fract() => Vector4F32.vec4_fract(this);
 		// public float Sum() => Vector4F32.vec4_sum(this);
 		// public float Magnitude() => Vector4F32.vec4_magnitude(this);
 		// public float Magnitude_sqr() => Vector4F32.vec4_magnitude_sqr(this);
@@ -413,6 +425,9 @@ namespace PrismMath.Internal {
 		internal static extern DVector2 dvec2_sign(DVector2 i);
 
 		[DllImport("prism_math")]
+		internal static extern DVector2 dvec2_fract(DVector2 i);
+
+		[DllImport("prism_math")]
 		internal static extern double dvec2_sum(DVector2 i);
 
 		[DllImport("prism_math")]
@@ -467,6 +482,7 @@ namespace PrismMath.Internal {
 		// public DVector2 Cos() => Vector2F64.dvec2_cos(this);
 		// public DVector2 Tan() => Vector2F64.dvec2_tan(this);
 		// public DVector2 Sign() => Vector2F64.dvec2_sign(this);
+		// public DVector2 Fract() => Vector2F64.dvec2_fract(this);
 		// public double Sum() => Vector2F64.dvec2_sum(this);
 		// public double Magnitude() => Vector2F64.dvec2_magnitude(this);
 		// public double Magnitude_sqr() => Vector2F64.dvec2_magnitude_sqr(this);
@@ -526,6 +542,9 @@ namespace PrismMath.Internal {
 
 		[DllImport("prism_math")]
 		internal static extern DVector3 dvec3_sign(DVector3 i);
+
+		[DllImport("prism_math")]
+		internal static extern DVector3 dvec3_fract(DVector3 i);
 
 		[DllImport("prism_math")]
 		internal static extern double dvec3_sum(DVector3 i);
@@ -588,6 +607,7 @@ namespace PrismMath.Internal {
 		// public DVector3 Cos() => Vector3F64.dvec3_cos(this);
 		// public DVector3 Tan() => Vector3F64.dvec3_tan(this);
 		// public DVector3 Sign() => Vector3F64.dvec3_sign(this);
+		// public DVector3 Fract() => Vector3F64.dvec3_fract(this);
 		// public double Sum() => Vector3F64.dvec3_sum(this);
 		// public double Magnitude() => Vector3F64.dvec3_magnitude(this);
 		// public double Magnitude_sqr() => Vector3F64.dvec3_magnitude_sqr(this);
@@ -654,6 +674,9 @@ namespace PrismMath.Internal {
 		internal static extern DVector4 dvec4_sign(DVector4 i);
 
 		[DllImport("prism_math")]
+		internal static extern DVector4 dvec4_fract(DVector4 i);
+
+		[DllImport("prism_math")]
 		internal static extern double dvec4_sum(DVector4 i);
 
 		[DllImport("prism_math")]
@@ -712,6 +735,7 @@ namespace PrismMath.Internal {
 		// public DVector4 Cos() => Vector4F64.dvec4_cos(this);
 		// public DVector4 Tan() => Vector4F64.dvec4_tan(this);
 		// public DVector4 Sign() => Vector4F64.dvec4_sign(this);
+		// public DVector4 Fract() => Vector4F64.dvec4_fract(this);
 		// public double Sum() => Vector4F64.dvec4_sum(this);
 		// public double Magnitude() => Vector4F64.dvec4_magnitude(this);
 		// public double Magnitude_sqr() => Vector4F64.dvec4_magnitude_sqr(this);

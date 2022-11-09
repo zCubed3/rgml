@@ -68,6 +68,7 @@ namespace PrismMath
         public float Sum => Vector4F32.vec4_sum(this);
         public float Magnitude => Vector4F32.vec4_magnitude(this);
         public float MagnitudeSqr => Vector4F32.vec4_magnitude_sqr(this);
+        public Vector4 Fract => Vector4F32.vec4_fract(this);
 
         public float[] Backing => backing;
 
@@ -144,6 +145,7 @@ namespace PrismMath
         public double Sum => Vector4F64.dvec4_sum(this);
         public double Magnitude => Vector4F64.dvec4_magnitude(this);
         public double MagnitudeSqr => Vector4F64.dvec4_magnitude_sqr(this);
+        public DVector4 Fract => Vector4F64.dvec4_fract(this);
 
         public double[] Backing => backing;
 
