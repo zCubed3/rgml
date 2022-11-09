@@ -8,12 +8,17 @@ namespace PrismMath
     {
         public Vector3()
         {
-            backing = new float[] { 0, 0, 0 };
+            backing = new float[3] { 0, 0, 0 };
         }
 
         public Vector3(float x, float y, float z)
         {
-            backing = new float[] { x, y, z };
+            backing = new float[3] { x, y, z };
+        }
+
+        public Vector3(float x)
+        {
+            backing = new float[3] { x, x, x };
         }
 
         public override string ToString()
@@ -62,6 +67,8 @@ namespace PrismMath
         public float Magnitude => Vector3F32.vec3_magnitude(this);
         public float MagnitudeSqr => Vector3F32.vec3_magnitude_sqr(this);
 
+        public float[] Backing => backing;
+
         public Vector3 Min(Vector3 rhs) => Vector3F32.vec3_min(this, rhs);
         public Vector3 Max(Vector3 rhs) => Vector3F32.vec3_max(this, rhs);
         public Vector3 Pow(Vector3 rhs) => Vector3F32.vec3_pow(this, rhs);
@@ -75,12 +82,17 @@ namespace PrismMath
     {
         public DVector3()
         {
-            backing = new double[] { 0, 0, 0 };
+            backing = new double[3] { 0, 0, 0 };
         }
 
         public DVector3(double x, double y, double z)
         {
-            backing = new double[] { x, y, z };
+            backing = new double[3] { x, y, z };
+        }
+
+        public DVector3(double x)
+        {
+            backing = new double[3] { x, x, x };
         }
 
         public override string ToString()
@@ -128,6 +140,8 @@ namespace PrismMath
         public double Sum => Vector3F64.dvec3_sum(this);
         public double Magnitude => Vector3F64.dvec3_magnitude(this);
         public double MagnitudeSqr => Vector3F64.dvec3_magnitude_sqr(this);
+
+        public double[] Backing => backing;
 
         public DVector3 Min(DVector3 rhs) => Vector3F64.dvec3_min(this, rhs);
         public DVector3 Max(DVector3 rhs) => Vector3F64.dvec3_max(this, rhs);

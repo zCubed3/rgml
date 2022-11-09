@@ -115,6 +115,9 @@ bindings: list[FFIBind] = [
         FFIMethod("new", "new", FFIMethodConvention.CUSTOM, "Vector2F32", "Vector2F32")
             .set_input_alt("x: f32, y: f32")
             .set_call_alt("Vector2F32::new(x, y)"),
+        FFIMethod("scalar", "scalar", FFIMethodConvention.CUSTOM, "Vector2F32", "Vector2F32")
+            .set_input_alt("x: f32")
+            .set_call_alt("Vector2F32::from_scalar(x)"),
         FFIMethod("default", "default", FFIMethodConvention.CUSTOM, "Vector2F32", "Vector2F32")
             .set_input_alt("")
             .set_call_alt("Vector2F32::default()"),
@@ -154,6 +157,9 @@ bindings: list[FFIBind] = [
         FFIMethod("new", "new", FFIMethodConvention.CUSTOM, "Vector3F32", "Vector3F32")
             .set_input_alt("x: f32, y: f32, z: f32")
             .set_call_alt("Vector3F32::new(x, y, z)"),
+        FFIMethod("scalar", "scalar", FFIMethodConvention.CUSTOM, "Vector3F32", "Vector3F32")
+            .set_input_alt("x: f32")
+            .set_call_alt("Vector3F32::from_scalar(x)"),
         FFIMethod("default", "default", FFIMethodConvention.CUSTOM, "Vector3F32", "Vector3F32")
             .set_input_alt("")
             .set_call_alt("Vector3F32::default()"),
@@ -196,6 +202,9 @@ bindings: list[FFIBind] = [
         FFIMethod("new", "new", FFIMethodConvention.CUSTOM, "Vector4F32", "Vector4F32")
             .set_input_alt("x: f32, y: f32, z: f32, w: f32")
             .set_call_alt("Vector4F32::new(x, y, z, w)"),
+        FFIMethod("scalar", "scalar", FFIMethodConvention.CUSTOM, "Vector4F32", "Vector4F32")
+            .set_input_alt("x: f32")
+            .set_call_alt("Vector4F32::from_scalar(x)"),
         FFIMethod("default", "default", FFIMethodConvention.CUSTOM, "Vector4F32", "Vector4F32")
             .set_input_alt("")
             .set_call_alt("Vector4F32::default()"),
@@ -235,6 +244,9 @@ bindings: list[FFIBind] = [
         FFIMethod("new", "new", FFIMethodConvention.CUSTOM, "Vector2F64", "Vector2F64")
             .set_input_alt("x: f64, y: f64")
             .set_call_alt("Vector2F64::new(x, y)"),
+        FFIMethod("scalar", "scalar", FFIMethodConvention.CUSTOM, "Vector2F64", "Vector2F64")
+            .set_input_alt("x: f64")
+            .set_call_alt("Vector2F64::from_scalar(x)"),
         FFIMethod("default", "default", FFIMethodConvention.CUSTOM, "Vector2F64", "Vector2F64")
             .set_input_alt("")
             .set_call_alt("Vector2F64::default()"),
@@ -274,6 +286,9 @@ bindings: list[FFIBind] = [
         FFIMethod("new", "new", FFIMethodConvention.CUSTOM, "Vector3F64", "Vector3F64")
             .set_input_alt("x: f64, y: f64, z: f64")
             .set_call_alt("Vector3F64::new(x, y, z)"),
+        FFIMethod("scalar", "scalar", FFIMethodConvention.CUSTOM, "Vector3F64", "Vector3F64")
+            .set_input_alt("x: f64")
+            .set_call_alt("Vector3F64::from_scalar(x)"),
         FFIMethod("default", "default", FFIMethodConvention.CUSTOM, "Vector3F64", "Vector3F64")
             .set_input_alt("")
             .set_call_alt("Vector3F64::default()"),
@@ -316,6 +331,9 @@ bindings: list[FFIBind] = [
         FFIMethod("new", "new", FFIMethodConvention.CUSTOM, "Vector4F64", "Vector4F64")
             .set_input_alt("x: f64, y: f64, z: f64, w: f64")
             .set_call_alt("Vector4F64::new(x, y, z, w)"),
+        FFIMethod("scalar", "scalar", FFIMethodConvention.CUSTOM, "Vector4F64", "Vector4F64")
+            .set_input_alt("x: f64")
+            .set_call_alt("Vector4F64::from_scalar(x)"),
         FFIMethod("default", "default", FFIMethodConvention.CUSTOM, "Vector4F64", "Vector4F64")
             .set_input_alt("")
             .set_call_alt("Vector4F64::default()"),
@@ -520,9 +538,9 @@ with open("bindings/dotnet/Internal.cs", "w") as file:
             skeleton += f" {bind.rust_name}.{csharp_raw_name}({csharp_this}{pad}{csharp_rhs});\n"
 
         file.write("\t\t// Skeleton Bindings (these are placeholders, they may need to be manually fixed)\n")
-        file.write(f"{skeleton}\n")
+        file.write(f"{skeleton}")
 
-        file.write(f"\n\t}}\n\n")
+        file.write(f"\t}}\n")
 
-    file.write("}\n\n")
+    file.write("}\n")
 

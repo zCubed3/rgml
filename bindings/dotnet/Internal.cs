@@ -1,5 +1,5 @@
 //
-// Generated at 2022-11-08 21:04:30.007676 by generate_ffi.py
+// Generated at 2022-11-09 20:03:00.647080 by generate_ffi.py
 //
 
 using System.Runtime.InteropServices;
@@ -79,6 +79,9 @@ namespace PrismMath.Internal {
 		internal static extern Vector2 vec2_new(float x, float y);
 
 		[DllImport("prism_math")]
+		internal static extern Vector2 vec2_scalar(float x);
+
+		[DllImport("prism_math")]
 		internal static extern Vector2 vec2_default();
 
 		[DllImport("prism_math")]
@@ -112,13 +115,11 @@ namespace PrismMath.Internal {
 		// public float Dot(Vector2 rhs) => Vector2F32.vec2_dot(this, rhs);
 		// public Vector2 Lerp(Vector2 to, float alpha) => Vector2F32.vec2_lerp(this, to, alpha);
 		// public Vector2 New(float x, float y) => Vector2F32.vec2_new(x, y);
+		// public Vector2 Scalar(float x) => Vector2F32.vec2_scalar(x);
 		// public Vector2 Default() => Vector2F32.vec2_default();
 		// public Vector2 From_vec3(Vector3 i) => Vector2F32.vec2_from_vec3(i);
 		// public Vector2 From_vec4(Vector4 i) => Vector2F32.vec2_from_vec4(i);
-
-
 	}
-
 	internal class Vector3F32 {
 		[DllImport("prism_math")]
 		internal static extern Vector3 vec3_add(Vector3 lhs, Vector3 rhs);
@@ -199,6 +200,9 @@ namespace PrismMath.Internal {
 		internal static extern Vector3 vec3_new(float x, float y, float z);
 
 		[DllImport("prism_math")]
+		internal static extern Vector3 vec3_scalar(float x);
+
+		[DllImport("prism_math")]
 		internal static extern Vector3 vec3_default();
 
 		[DllImport("prism_math")]
@@ -234,13 +238,11 @@ namespace PrismMath.Internal {
 		// public float Dot(Vector3 rhs) => Vector3F32.vec3_dot(this, rhs);
 		// public Vector3 Lerp(Vector3 to, float alpha) => Vector3F32.vec3_lerp(this, to, alpha);
 		// public Vector3 New(float x, float y, float z) => Vector3F32.vec3_new(x, y, z);
+		// public Vector3 Scalar(float x) => Vector3F32.vec3_scalar(x);
 		// public Vector3 Default() => Vector3F32.vec3_default();
 		// public Vector3 From_vec2(Vector2 i) => Vector3F32.vec3_from_vec2(i);
 		// public Vector3 From_vec4(Vector4 i) => Vector3F32.vec3_from_vec4(i);
-
-
 	}
-
 	internal class Vector4F32 {
 		[DllImport("prism_math")]
 		internal static extern Vector4 vec4_add(Vector4 lhs, Vector4 rhs);
@@ -321,6 +323,9 @@ namespace PrismMath.Internal {
 		internal static extern Vector4 vec4_new(float x, float y, float z, float w);
 
 		[DllImport("prism_math")]
+		internal static extern Vector4 vec4_scalar(float x);
+
+		[DllImport("prism_math")]
 		internal static extern Vector4 vec4_default();
 
 		[DllImport("prism_math")]
@@ -356,13 +361,11 @@ namespace PrismMath.Internal {
 		// public Vector4 Lerp(Vector4 to, float alpha) => Vector4F32.vec4_lerp(this, to, alpha);
 		// public Vector4 Identity() => Vector4F32.vec4_identity();
 		// public Vector4 New(float x, float y, float z, float w) => Vector4F32.vec4_new(x, y, z, w);
+		// public Vector4 Scalar(float x) => Vector4F32.vec4_scalar(x);
 		// public Vector4 Default() => Vector4F32.vec4_default();
 		// public Vector4 From_vec2(Vector2 i) => Vector4F32.vec4_from_vec2(i);
 		// public Vector4 From_vec3(Vector3 i) => Vector4F32.vec4_from_vec3(i);
-
-
 	}
-
 	internal class Vector2F64 {
 		[DllImport("prism_math")]
 		internal static extern DVector2 dvec2_add(DVector2 lhs, DVector2 rhs);
@@ -437,6 +440,9 @@ namespace PrismMath.Internal {
 		internal static extern DVector2 dvec2_new(double x, double y);
 
 		[DllImport("prism_math")]
+		internal static extern DVector2 dvec2_scalar(double x);
+
+		[DllImport("prism_math")]
 		internal static extern DVector2 dvec2_default();
 
 		[DllImport("prism_math")]
@@ -470,13 +476,11 @@ namespace PrismMath.Internal {
 		// public double Dot(DVector2 rhs) => Vector2F64.dvec2_dot(this, rhs);
 		// public DVector2 Lerp(DVector2 to, double alpha) => Vector2F64.dvec2_lerp(this, to, alpha);
 		// public DVector2 New(double x, double y) => Vector2F64.dvec2_new(x, y);
+		// public DVector2 Scalar(double x) => Vector2F64.dvec2_scalar(x);
 		// public DVector2 Default() => Vector2F64.dvec2_default();
 		// public DVector2 From_vec3(DVector3 i) => Vector2F64.dvec2_from_vec3(i);
 		// public DVector2 From_vec4(DVector4 i) => Vector2F64.dvec2_from_vec4(i);
-
-
 	}
-
 	internal class Vector3F64 {
 		[DllImport("prism_math")]
 		internal static extern DVector3 dvec3_add(DVector3 lhs, DVector3 rhs);
@@ -557,6 +561,9 @@ namespace PrismMath.Internal {
 		internal static extern DVector3 dvec3_new(double x, double y, double z);
 
 		[DllImport("prism_math")]
+		internal static extern DVector3 dvec3_scalar(double x);
+
+		[DllImport("prism_math")]
 		internal static extern DVector3 dvec3_default();
 
 		[DllImport("prism_math")]
@@ -592,13 +599,11 @@ namespace PrismMath.Internal {
 		// public double Dot(DVector3 rhs) => Vector3F64.dvec3_dot(this, rhs);
 		// public DVector3 Lerp(DVector3 to, double alpha) => Vector3F64.dvec3_lerp(this, to, alpha);
 		// public DVector3 New(double x, double y, double z) => Vector3F64.dvec3_new(x, y, z);
+		// public DVector3 Scalar(double x) => Vector3F64.dvec3_scalar(x);
 		// public DVector3 Default() => Vector3F64.dvec3_default();
 		// public DVector3 From_vec2(DVector2 i) => Vector3F64.dvec3_from_vec2(i);
 		// public DVector3 From_vec4(DVector4 i) => Vector3F64.dvec3_from_vec4(i);
-
-
 	}
-
 	internal class Vector4F64 {
 		[DllImport("prism_math")]
 		internal static extern DVector4 dvec4_add(DVector4 lhs, DVector4 rhs);
@@ -679,6 +684,9 @@ namespace PrismMath.Internal {
 		internal static extern DVector4 dvec4_new(double x, double y, double z, double w);
 
 		[DllImport("prism_math")]
+		internal static extern DVector4 dvec4_scalar(double x);
+
+		[DllImport("prism_math")]
 		internal static extern DVector4 dvec4_default();
 
 		[DllImport("prism_math")]
@@ -714,13 +722,11 @@ namespace PrismMath.Internal {
 		// public DVector4 Lerp(DVector4 to, double alpha) => Vector4F64.dvec4_lerp(this, to, alpha);
 		// public DVector4 Identity() => Vector4F64.dvec4_identity();
 		// public DVector4 New(double x, double y, double z, double w) => Vector4F64.dvec4_new(x, y, z, w);
+		// public DVector4 Scalar(double x) => Vector4F64.dvec4_scalar(x);
 		// public DVector4 Default() => Vector4F64.dvec4_default();
 		// public DVector4 From_vec2(DVector2 i) => Vector4F64.dvec4_from_vec2(i);
 		// public DVector4 From_vec3(DVector3 i) => Vector4F64.dvec4_from_vec3(i);
-
-
 	}
-
 	internal class Matrix4x4F32 {
 		[DllImport("prism_math")]
 		internal static extern Matrix4x4 mat4_mul(Matrix4x4 lhs, Matrix4x4 rhs);
@@ -771,10 +777,7 @@ namespace PrismMath.Internal {
 		// public Matrix4x4 Perspective(float fov_y, float aspect, float z_near, float z_far) => Matrix4x4F32.mat4_perspective(fov_y, aspect, z_near, z_far);
 		// public Matrix4x4 Default() => Matrix4x4F32.mat4_default();
 		// public Matrix4x4 Identity() => Matrix4x4F32.mat4_identity();
-
-
 	}
-
 	internal class Matrix4x4F64 {
 		[DllImport("prism_math")]
 		internal static extern DMatrix4x4 dmat4_mul(DMatrix4x4 lhs, DMatrix4x4 rhs);
@@ -825,9 +828,5 @@ namespace PrismMath.Internal {
 		// public DMatrix4x4 Perspective(double fov_y, double aspect, double z_near, double z_far) => Matrix4x4F64.dmat4_perspective(fov_y, aspect, z_near, z_far);
 		// public DMatrix4x4 Default() => Matrix4x4F64.dmat4_default();
 		// public DMatrix4x4 Identity() => Matrix4x4F64.dmat4_identity();
-
-
 	}
-
 }
-

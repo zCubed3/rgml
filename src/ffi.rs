@@ -1,5 +1,5 @@
 //
-// Generated at 2022-11-08 21:04:29.999680 by generate_ffi.py
+// Generated at 2022-11-09 20:03:00.640082 by generate_ffi.py
 //
 
 #![allow(clippy::needless_return)]
@@ -127,6 +127,11 @@ pub extern "C" fn vec2_lerp(from: Vector2F32, to: Vector2F32, alpha: f32) -> Vec
 #[no_mangle]
 pub extern "C" fn vec2_new(x: f32, y: f32) -> Vector2F32 {
 	return Vector2F32::new(x, y);
+}
+
+#[no_mangle]
+pub extern "C" fn vec2_scalar(x: f32) -> Vector2F32 {
+	return Vector2F32::from_scalar(x);
 }
 
 #[no_mangle]
@@ -278,6 +283,11 @@ pub extern "C" fn vec3_new(x: f32, y: f32, z: f32) -> Vector3F32 {
 }
 
 #[no_mangle]
+pub extern "C" fn vec3_scalar(x: f32) -> Vector3F32 {
+	return Vector3F32::from_scalar(x);
+}
+
+#[no_mangle]
 pub extern "C" fn vec3_default() -> Vector3F32 {
 	return Vector3F32::default();
 }
@@ -426,6 +436,11 @@ pub extern "C" fn vec4_new(x: f32, y: f32, z: f32, w: f32) -> Vector4F32 {
 }
 
 #[no_mangle]
+pub extern "C" fn vec4_scalar(x: f32) -> Vector4F32 {
+	return Vector4F32::from_scalar(x);
+}
+
+#[no_mangle]
 pub extern "C" fn vec4_default() -> Vector4F32 {
 	return Vector4F32::default();
 }
@@ -561,6 +576,11 @@ pub extern "C" fn dvec2_lerp(from: Vector2F64, to: Vector2F64, alpha: f64) -> Ve
 #[no_mangle]
 pub extern "C" fn dvec2_new(x: f64, y: f64) -> Vector2F64 {
 	return Vector2F64::new(x, y);
+}
+
+#[no_mangle]
+pub extern "C" fn dvec2_scalar(x: f64) -> Vector2F64 {
+	return Vector2F64::from_scalar(x);
 }
 
 #[no_mangle]
@@ -712,6 +732,11 @@ pub extern "C" fn dvec3_new(x: f64, y: f64, z: f64) -> Vector3F64 {
 }
 
 #[no_mangle]
+pub extern "C" fn dvec3_scalar(x: f64) -> Vector3F64 {
+	return Vector3F64::from_scalar(x);
+}
+
+#[no_mangle]
 pub extern "C" fn dvec3_default() -> Vector3F64 {
 	return Vector3F64::default();
 }
@@ -857,6 +882,11 @@ pub extern "C" fn dvec4_identity() -> Vector4F64 {
 #[no_mangle]
 pub extern "C" fn dvec4_new(x: f64, y: f64, z: f64, w: f64) -> Vector4F64 {
 	return Vector4F64::new(x, y, z, w);
+}
+
+#[no_mangle]
+pub extern "C" fn dvec4_scalar(x: f64) -> Vector4F64 {
+	return Vector4F64::from_scalar(x);
 }
 
 #[no_mangle]

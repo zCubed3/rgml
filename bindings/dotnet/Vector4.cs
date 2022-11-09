@@ -8,12 +8,17 @@ namespace PrismMath
     {
         public Vector4()
         {
-            backing = new float[] { 0, 0, 0 };
+            backing = new float[4] { 0, 0, 0, 0 };
         }
 
-        public Vector4(float x, float y, float z)
+        public Vector4(float x)
         {
-            backing = new float[] { x, y, z };
+            backing = new float[4] { x, x, x, x };
+        }
+
+        public Vector4(float x, float y, float z, float w)
+        {
+            backing = new float[4] { x, y, z, w };
         }
 
         public override string ToString()
@@ -64,6 +69,8 @@ namespace PrismMath
         public float Magnitude => Vector4F32.vec4_magnitude(this);
         public float MagnitudeSqr => Vector4F32.vec4_magnitude_sqr(this);
 
+        public float[] Backing => backing;
+
         public static Vector4 Identity => Vector4F32.vec4_identity();
 
         public Vector4 Min(Vector4 rhs) => Vector4F32.vec4_min(this, rhs);
@@ -77,12 +84,17 @@ namespace PrismMath
     {
         public DVector4()
         {
-            backing = new double[] { 0, 0, 0 };
+            backing = new double[4] { 0, 0, 0, 0 };
         }
 
-        public DVector4(double x, double y, double z)
+        public DVector4(double x)
         {
-            backing = new double[] { x, y, z };
+            backing = new double[4] { x, x, x, x };
+        }
+
+        public DVector4(double x, double y, double z, double w)
+        {
+            backing = new double[4] { x, y, z, w };
         }
 
         public override string ToString()
@@ -132,6 +144,8 @@ namespace PrismMath
         public double Sum => Vector4F64.dvec4_sum(this);
         public double Magnitude => Vector4F64.dvec4_magnitude(this);
         public double MagnitudeSqr => Vector4F64.dvec4_magnitude_sqr(this);
+
+        public double[] Backing => backing;
 
         public static DVector4 Identity => Vector4F64.dvec4_identity();
 

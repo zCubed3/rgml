@@ -39,7 +39,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
     }
 
     /// Creates a new [Vector] by copying the provided value into each element
-    pub extern "C" fn from_scalar(value: T) -> Self {
+    pub fn from_scalar(value: T) -> Self {
         Vector { backing: [value; COUNT] }
     }
 

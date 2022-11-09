@@ -7,15 +7,24 @@ namespace PrismMath
     public partial struct Matrix4x4
     {
         public static Matrix4x4 Identity => Matrix4x4F32.mat4_identity();
+        public static Matrix4x4 Default => Matrix4x4F32.mat4_default();
 
         public Matrix4x4()
         {
-            var def = Matrix4x4F32.mat4_default();
+            var def = Default;
 
-            r0 = def.r0;
-            r1 = def.r1;
-            r2 = def.r2;
-            r3 = def.r3;
+            this.r0 = def.r0;
+            this.r1 = def.r1;
+            this.r2 = def.r2;
+            this.r3 = def.r3;
+        }
+
+        public Matrix4x4(Vector4 r0, Vector4 r1, Vector4 r2, Vector4 r3)
+        {
+            this.r0 = r0.Backing;
+            this.r1 = r1.Backing;
+            this.r2 = r2.Backing;
+            this.r3 = r3.Backing;
         }
 
         public override string ToString()
@@ -40,15 +49,24 @@ namespace PrismMath
     public partial struct DMatrix4x4
     {
         public static DMatrix4x4 Identity => Matrix4x4F64.dmat4_identity();
+        public static DMatrix4x4 Default => Matrix4x4F64.dmat4_default();
 
         public DMatrix4x4()
         {
-            var def = Matrix4x4F64.dmat4_default();
+            var def = Default;
 
-            r0 = def.r0;
-            r1 = def.r1;
-            r2 = def.r2;
-            r3 = def.r3;
+            this.r0 = def.r0;
+            this.r1 = def.r1;
+            this.r2 = def.r2;
+            this.r3 = def.r3;
+        }
+
+        public DMatrix4x4(DVector4 r0, DVector4 r1, DVector4 r2, DVector4 r3)
+        {
+            this.r0 = r0.Backing;
+            this.r1 = r1.Backing;
+            this.r2 = r2.Backing;
+            this.r3 = r3.Backing;
         }
 
         public override string ToString()
