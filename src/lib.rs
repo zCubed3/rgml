@@ -1,13 +1,21 @@
-#[allow(clippy::needless_return)]
+#![allow(clippy::needless_return)]
+
+/// Defines "real" numbers, which are used within the math library
 pub mod real;
 
+/// Defines arbitrary vector types backed by "real"
 pub mod vector;
+
+/// Defines matrix types backed by "real"
 pub mod matrix;
 
+/// Defines common real, vector, and matrix types
 pub mod common;
 
+/// [Auto generated](https://github.com/zCubed3/prism_math/blob/main/scripts/codegen/generate_ffi.py) FFI glue for C/C++ support
 pub mod ffi;
 
+/// Prelude which contains the most commonly used features
 pub mod prelude {
     //
     // Matrix types

@@ -9,25 +9,26 @@ use std::iter::*;
 use crate::real::RealNumber;
 
 #[cfg(feature="swizzle")]
-pub mod swizzle_gen;
+#[cfg_attr(feature="swizzle", doc(hidden))]
+pub mod swizzle;
 
 #[cfg(feature="swizzle")]
-pub use swizzle_gen::*;
+#[cfg_attr(feature="swizzle", doc(hidden))]
+pub use swizzle::*;
 
 #[cfg(feature="serialization")]
 use serde::Serialize;
 
 ///
-/// Configurable vector type for usage with Vector math
+/// A vector type. Commonly used for 2D and 3D math
 ///
-/// A vector is simply a wrapper for an array of the given real type and count
-/// Supports any real that can be implemented as a [Real] trait
+/// At an underlying level a [Vector] is an equivalent to using `[T; C]`
 ///
 #[cfg_attr(feature="serialization", derive(Serialize))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Vector<T: RealNumber, const COUNT: usize> {
-    /// The underlying array of the vector, the vector dereferences into this array
+    /// The underlying array of the vector, dereferencing [Vector] returns this
     #[cfg_attr(feature="serialization", serde(with = "serde_arrays"))]
     pub backing: [T; COUNT],
 }
@@ -43,7 +44,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         Vector { backing: [value; COUNT] }
     }
 
-    /// Returns the sum of all components ([Real]) within this [Vector]
+    /// Returns the sum of all components within this [Vector]
     pub fn sum(&self) -> T {
         let mut sum = T::default();
 
@@ -54,11 +55,12 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return sum;
     }
 
+    /// Returns the square length of this [Vector] (not sqrt(length)!)
     pub fn magnitude_sqr(&self) -> T {
         return self.dot(*self);
     }
 
-    /// The length of this [Vector], not to be confused with [Vector::sum]!
+    /// Returns the length of this [Vector]
     pub fn magnitude(&self) -> T {
         return self.dot(*self).real_sqrt();
     }
@@ -79,6 +81,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return d;
     }
 
+    /// Returns the interpolated value of this to another [Vector] by T
     pub fn lerp(&self, to: Self, alpha: T) -> Self {
         let mut a = *self;
 
@@ -89,6 +92,8 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return a;
     }
 
+    /// Returns the step function of this vector
+    /// Refer to [GLSL specs](https://registry.khronos.org/OpenGL-Refpages/gl4/html/step.xhtml)
     pub fn step(&self, rhs: Self) -> Self {
         let mut a = Self::default();
 
@@ -99,6 +104,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return a;
     }
 
+    /// Returns the sign of this vector
     pub fn sign(&self) -> Self {
         let mut a = Self::default();
 
@@ -109,6 +115,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return a;
     }
 
+    /// Returns the fractional component of this vector
     pub fn fract(&self) -> Self {
         let mut a = Self::default();
 
@@ -433,6 +440,7 @@ impl<T: RealNumber, const COUNT: usize> PartialEq for Vector<T, COUNT> {
 //
 
 /// Macro to provide a [From] implementation for casting this [Vector] into another [Vector]
+#[macro_export]
 macro_rules! vector_from_vector {
     ($from_count:literal, $into_count:literal) => {
         impl<T: RealNumber> From<Vector<T, $from_count>> for Vector<T, $into_count> {
@@ -452,87 +460,97 @@ macro_rules! vector_from_vector {
 //
 // Common vector types
 //
+vector_from_vector!(2, 3);
+vector_from_vector!(2, 4);
+
+impl<T: RealNumber> Vector<T, 2> {
+    pub fn new(x: T, y: T) -> Self {
+        Self::from_array([x, y])
+    }
+}
+
+vector_from_vector!(3, 2);
+vector_from_vector!(3, 4);
+
+impl<T: RealNumber> Vector<T, 3> {
+    pub fn new(x: T, y: T, z: T) -> Self {
+        Self::from_array([x, y, z])
+    }
+
+    /// Returns the cross product of the this [Vector] and another
+    ///
+    /// Note:
+    ///   Only implemented for 3 dimensional vectors due to cross product being 3D specific!
+    pub fn cross(&self, rhs: Self) -> Self {
+        Self::from_array([
+            self[1] * rhs[2] - self[2] * rhs[1],
+            self[2] * rhs[0] - self[0] * rhs[2],
+            self[0] * rhs[1] - self[1] * rhs[0]
+        ])
+    }
+
+    /// Reflects this [Vector] by the given normal
+    pub fn reflect(&self, normal: Self) -> Self {
+        return *self - normal * self.dot(normal) * (T::real_one() + T::real_one());
+    }
+}
+
+vector_from_vector!(4, 2);
+vector_from_vector!(4, 3);
+
+impl<T: RealNumber> Vector<T, 4> {
+    pub fn new(x: T, y: T, z: T, w: T) -> Self {
+        Self::from_array([x, y, z, w])
+    }
+
+    pub fn from_w(rhs: Vector<T, 3>, w: T) -> Self {
+        let mut o = Vector::<T, 4>::default();
+
+        for c in 0..3 {
+            o[c] = rhs[c];
+        }
+
+        o[3] = w;
+
+        return o;
+    }
+
+    pub fn identity() -> Self {
+        return Self::new(T::real_zero(), T::real_zero(), T::real_zero(), T::real_one());
+    }
+}
+
 
 /// Contains commonly used [Vector] aliases with additional implementations for ease of use
 pub mod common {
     use crate::real::Real;
-
     use super::*;
 
-    /// Common Vector2 types
+    /// [Vector<T, 2>] backed by [Real]
     pub type Vector2 = Vector<Real, 2>;
+    /// [Vector<T, 2>] backed by [f32]
     pub type Vector2F32 = Vector<f32, 2>;
+    /// [Vector<T, 2>] backed by [f64]
     pub type Vector2F64 = Vector<f64, 2>;
 
-    vector_from_vector!(2, 3);
-    vector_from_vector!(2, 4);
-
-    impl<T: RealNumber> Vector<T, 2> {
-        pub fn new(x: T, y: T) -> Self {
-            Self::from_array([x, y])
-        }
-    }
-
-    /// Common Vector2 types
+    /// [Vector<T, 3>] backed by [Real]
     pub type Vector3 = Vector<Real, 3>;
+    /// [Vector<T, 3>] backed by [f32]
     pub type Vector3F32 = Vector<f32, 3>;
+    /// [Vector<T, 3>] backed by [f64]
     pub type Vector3F64 = Vector<f64, 3>;
 
-    vector_from_vector!(3, 2);
-    vector_from_vector!(3, 4);
-
-    impl<T: RealNumber> Vector<T, 3> {
-        pub fn new(x: T, y: T, z: T) -> Self {
-            Self::from_array([x, y, z])
-        }
-
-        /// Returns the cross product of the this [Vector] and another
-        /// *Only implemented for 3 dimensional vectors due to cross product being 3D specific!*
-        pub fn cross(&self, rhs: Self) -> Self {
-            Self::from_array([
-                self[1] * rhs[2] - self[2] * rhs[1],
-                self[2] * rhs[0] - self[0] * rhs[2],
-                self[0] * rhs[1] - self[1] * rhs[0]
-            ])
-        }
-
-        pub fn reflect(&self, normal: Self) -> Self {
-            return *self - normal * self.dot(normal) * (T::real_one() + T::real_one());
-        }
-    }
-
-    /// Common 4D vector types (same type as [Quaternion])
+    /// [Vector<T, 4>] backed by [Real]
     pub type Vector4 = Vector<Real, 4>;
+    /// [Vector<T, 4>] backed by [f32]
     pub type Vector4F32 = Vector<f32, 4>;
+    /// [Vector<T, 4>] backed by [f64]
     pub type Vector4F64 = Vector<f64, 4>;
 
-    vector_from_vector!(4, 2);
-    vector_from_vector!(4, 3);
-
-    impl<T: RealNumber> Vector<T, 4> {
-        pub fn new(x: T, y: T, z: T, w: T) -> Self {
-            Self::from_array([x, y, z, w])
-        }
-
-        pub fn from_w(rhs: Vector<T, 3>, w: T) -> Self {
-            let mut o = Vector::<T, 4>::default();
-
-            for c in 0..3 {
-                o[c] = rhs[c];
-            }
-
-            o[3] = w;
-
-            return o;
-        }
-
-        pub fn identity() -> Self {
-            return Self::new(T::real_zero(), T::real_zero(), T::real_zero(), T::real_one());
-        }
-    }
-
-    /// Quaternion (same type as [Vector4])
+    /// [Vector<T, 4>] backed by [Real]
     pub type Quaternion = Vector4;
+    /// [Vector<T, 4>] backed by [f32]
     pub type QuaternionF32 = Vector4F32;
+    /// [Vector<T, 4>] backed by [f64]
     pub type QuaternionF64 = Vector4F64;
 }
