@@ -6,10 +6,10 @@ mkdir target/
 mkdir target/debug
 mkdir target/release
 
-touch target/debug/rgml.so
-touch target/debug/rgml.a
-touch target/release/rgml.so
-touch target/release/rgml.a
+touch target/debug/librgml.so
+touch target/debug/librgml.a
+touch target/release/librgml.so
+touch target/release/librgml.a
 touch bindings/rgml.h
 
 mkdir -p bindings/dotnet/bin/Debug/net6.0
