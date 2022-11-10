@@ -481,7 +481,7 @@ with open("bindings/dotnet/Internal.cs", "w") as file:
 
         file.write(f"\tinternal class {bind.rust_name} {{\n")
 
-        skeleton = ""
+        skeleton = "\t\t/*\n"
         for method in bind.methods:
             file.write('\t\t[DllImport("prism_math")]\n')
 
@@ -540,11 +540,11 @@ with open("bindings/dotnet/Internal.cs", "w") as file:
 
             file.write(f"\t\tinternal static extern {csharp_output} {csharp_raw_name}({csharp_input});\n\n")
 
-            skeleton += f"\t\t// public {csharp_output} {csharp_name}({csharp_lhs}) =>"
+            skeleton += f"\t\tpublic {csharp_output} {csharp_name}({csharp_lhs}) =>"
             skeleton += f" {bind.rust_name}.{csharp_raw_name}({csharp_this}{pad}{csharp_rhs});\n"
 
         file.write("\t\t// Skeleton Bindings (these are placeholders, they may need to be manually fixed)\n")
-        file.write(f"{skeleton}")
+        file.write(f"{skeleton}\t\t*/\n")
 
         file.write(f"\t}}\n")
 

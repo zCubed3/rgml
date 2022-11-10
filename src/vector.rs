@@ -271,7 +271,7 @@ macro_rules! real_by_vector_op {
             type Output = Vector<$tipe, COUNT>;
 
             fn $func(self, rhs: Vector<$tipe, COUNT>) -> Self::Output {
-                let mut prod = Vector::<$tipe, COUNT>::default();
+                let mut prod = rhs;
 
                 for c in 0 .. COUNT {
                     prod[c] $call self;

@@ -42,6 +42,14 @@ Clone + Copy + Default + Display + DataBounds // Usability
     fn real_ceil(&self) -> Self;
     fn real_round(&self) -> Self;
 
+    fn real_fract(&self) -> Self {
+        return *self - self.real_floor();
+    }
+
+    fn real_sign(&self) -> Self {
+        return if *self < Self::real_zero() { -Self::real_one() } else { Self::real_one() }
+    }
+
     fn real_pow(&self, exp: Self) -> Self;
 
     fn real_lerp(&self, to: Self, alpha: Self) -> Self;
