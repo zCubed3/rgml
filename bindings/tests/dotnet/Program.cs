@@ -1,8 +1,8 @@
 ﻿using System;
 
-using PrismMath;
+using RGML;
 
-namespace PrismMathTest
+namespace RGMLTest
 {
     internal class Program
     {

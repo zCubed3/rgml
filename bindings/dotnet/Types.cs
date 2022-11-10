@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace PrismMath {
+namespace RGML {
     //
     // Single precision types
     //

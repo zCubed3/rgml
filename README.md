@@ -1,4 +1,4 @@
-# Prism Math Library
+# RGML - Rust Graphical Math Library
 
 ### CI Status
 ![Linux CI](https://github.com/zCubed3/prism_math/actions/workflows/ci_linux.yml/badge.svg?branch=main)

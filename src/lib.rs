@@ -12,7 +12,7 @@ pub mod matrix;
 /// Defines common real, vector, and matrix types
 pub mod common;
 
-/// [Auto generated](https://github.com/zCubed3/prism_math/blob/main/scripts/codegen/generate_ffi.py) FFI glue for C/C++ support
+/// [Auto generated](https://github.com/zCubed3/rgml/blob/main/scripts/codegen/generate_ffi.py) FFI glue for C/C++ support
 pub mod ffi;
 
 /// Prelude which contains the most commonly used features

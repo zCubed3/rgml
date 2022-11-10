@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="../../dotnet/PrismMath.NET.csproj" />
+    <ProjectReference Include="../../dotnet/RGML.NET.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

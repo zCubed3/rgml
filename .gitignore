@@ -3,4 +3,4 @@
 .vscode
 Cargo.lock
 
-prism_math.h
+rgml.h

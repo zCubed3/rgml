@@ -1,6 +1,6 @@
 #!/bin/python
 
-# Generates a swizzle macro block for use in the prism math library
+# Generates a swizzle macro block for use in the rgml math library
 # The resulting file is swizzle.gen.rs
 import itertools
 

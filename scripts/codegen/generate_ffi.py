@@ -474,7 +474,7 @@ with open("bindings/dotnet/Internal.cs", "w") as file:
 
     file.write("using System.Runtime.InteropServices;\n\n")
 
-    file.write("namespace PrismMath.Internal {\n")
+    file.write("namespace RGML.Internal {\n")
 
     for bind in bindings:
         print(bind.rust_name)
@@ -483,7 +483,7 @@ with open("bindings/dotnet/Internal.cs", "w") as file:
 
         skeleton = "\t\t/*\n"
         for method in bind.methods:
-            file.write('\t\t[DllImport("prism_math")]\n')
+            file.write('\t\t[DllImport("rgml")]\n')
 
             csharp_output = make_csharp_type(method.output_type)
             csharp_raw_name = bind.ffi_name + "_" + method.ffi_name

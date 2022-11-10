@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 
-using PrismMath.Internal;
+using RGML.Internal;
 
-namespace PrismMath
+namespace RGML
 {
     public partial struct Matrix4x4
     {
