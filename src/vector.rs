@@ -62,7 +62,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 
     /// Returns the length of this [Vector]
     pub fn magnitude(&self) -> T {
-        return self.dot(*self).real_sqrt();
+        return self.dot(*self).rl_sqrt();
     }
 
     /// Returns the normalized version of this [Vector]
@@ -86,7 +86,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         let mut a = *self;
 
         for c in 0..COUNT {
-            a[c] = self[c].real_lerp(to[c], alpha)
+            a[c] = self[c].rl_lerp(to[c], alpha)
         }
 
         return a;
@@ -98,7 +98,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         let mut a = Self::default();
 
         for c in 0..COUNT {
-            a[c] = if self[c] < rhs[c] { T::real_zero() } else { T::real_one() };
+            a[c] = if self[c] < rhs[c] { T::ZERO } else { T::ONE };
         }
 
         return a;
@@ -109,7 +109,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         let mut a = Self::default();
 
         for c in 0..COUNT {
-            a[c] = if self[c] < T::real_zero() { -T::real_one() } else { T::real_one() };
+            a[c] = if self[c] < T::ZERO { -T::ONE } else { T::ONE };
         }
 
         return a;
@@ -120,7 +120,7 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         let mut a = Self::default();
 
         for c in 0..COUNT {
-            a[c] = self[c] - self[c].real_floor();
+            a[c] = self[c] - self[c].rl_floor();
         }
 
         return a;
@@ -225,24 +225,24 @@ macro_rules! vector_comp_comp_func {
     };
 }
 
-vector_comp_comp_func!(min, =, real_min);
-vector_comp_comp_func!(max, =, real_max);
-vector_comp_comp_func!(pow, =, real_pow);
-vector_per_comp_func!(abs, =, real_abs);
-vector_per_comp_func!(floor, =, real_floor);
-vector_per_comp_func!(ceil, =, real_ceil);
-vector_per_comp_func!(round, =, real_round);
-vector_per_comp_func!(saturate, =, real_saturate);
-vector_per_comp_func!(sqrt, =, real_sqrt);
-vector_per_comp_func!(sin, =, real_sin);
-vector_per_comp_func!(cos, =, real_cos);
-vector_per_comp_func!(tan, =, real_tan);
+vector_comp_comp_func!(min, =, rl_min);
+vector_comp_comp_func!(max, =, rl_max);
+vector_comp_comp_func!(pow, =, rl_pow);
+vector_per_comp_func!(abs, =, rl_abs);
+vector_per_comp_func!(floor, =, rl_floor);
+vector_per_comp_func!(ceil, =, rl_ceil);
+vector_per_comp_func!(round, =, rl_round);
+vector_per_comp_func!(saturate, =, rl_saturate);
+vector_per_comp_func!(sqrt, =, rl_sqrt);
+vector_per_comp_func!(sin, =, rl_sin);
+vector_per_comp_func!(cos, =, rl_cos);
+vector_per_comp_func!(tan, =, rl_tan);
 
 
 //
 // Real Math Traits
 //
-macro_rules! vector_by_real_op_assign {
+macro_rules! vector_by_rl_op_assign {
     ($op:ident, $func:ident, $call:tt) => {
         impl<T: RealNumber, const COUNT: usize> $op<T> for Vector<T, COUNT> {
             fn $func(&mut self, rhs: T) {
@@ -254,7 +254,7 @@ macro_rules! vector_by_real_op_assign {
     };
 }
 
-macro_rules! vector_by_real_op {
+macro_rules! vector_by_rl_op {
     ($op:ident, $func:ident, $call:tt) => {
         impl<T: RealNumber, const COUNT: usize> $op<T> for Vector<T, COUNT> {
             type Output = Self;
@@ -272,7 +272,7 @@ macro_rules! vector_by_real_op {
     }
 }
 
-macro_rules! real_by_vector_op {
+macro_rules! rl_by_vector_op {
     ($op:ident, $func:ident, $call:tt, $tipe:ty) => {
         impl<const COUNT: usize> $op<Vector<$tipe, COUNT>> for $tipe {
             type Output = Vector<$tipe, COUNT>;
@@ -290,25 +290,25 @@ macro_rules! real_by_vector_op {
     };
 }
 
-vector_by_real_op_assign!(AddAssign, add_assign, +=);
-vector_by_real_op_assign!(SubAssign, sub_assign, -=);
-vector_by_real_op_assign!(MulAssign, mul_assign, *=);
-vector_by_real_op_assign!(DivAssign, div_assign, /=);
+vector_by_rl_op_assign!(AddAssign, add_assign, +=);
+vector_by_rl_op_assign!(SubAssign, sub_assign, -=);
+vector_by_rl_op_assign!(MulAssign, mul_assign, *=);
+vector_by_rl_op_assign!(DivAssign, div_assign, /=);
 
-vector_by_real_op!(Add, add, +=);
-vector_by_real_op!(Sub, sub, -=);
-vector_by_real_op!(Mul, mul, *=);
-vector_by_real_op!(Div, div, /=);
+vector_by_rl_op!(Add, add, +=);
+vector_by_rl_op!(Sub, sub, -=);
+vector_by_rl_op!(Mul, mul, *=);
+vector_by_rl_op!(Div, div, /=);
 
-real_by_vector_op!(Add, add, +=, f32);
-real_by_vector_op!(Sub, sub, -=, f32);
-real_by_vector_op!(Mul, mul, *=, f32);
-real_by_vector_op!(Div, div, /=, f32);
+rl_by_vector_op!(Add, add, +=, f32);
+rl_by_vector_op!(Sub, sub, -=, f32);
+rl_by_vector_op!(Mul, mul, *=, f32);
+rl_by_vector_op!(Div, div, /=, f32);
 
-real_by_vector_op!(Add, add, +=, f64);
-real_by_vector_op!(Sub, sub, -=, f64);
-real_by_vector_op!(Mul, mul, *=, f64);
-real_by_vector_op!(Div, div, /=, f64);
+rl_by_vector_op!(Add, add, +=, f64);
+rl_by_vector_op!(Sub, sub, -=, f64);
+rl_by_vector_op!(Mul, mul, *=, f64);
+rl_by_vector_op!(Div, div, /=, f64);
 
 
 
@@ -491,7 +491,7 @@ impl<T: RealNumber> Vector<T, 3> {
 
     /// Reflects this [Vector] by the given normal
     pub fn reflect(&self, normal: Self) -> Self {
-        return *self - normal * self.dot(normal) * (T::real_one() + T::real_one());
+        return *self - normal * self.dot(normal) * (T::ONE + T::ONE);
     }
 }
 
@@ -516,7 +516,7 @@ impl<T: RealNumber> Vector<T, 4> {
     }
 
     pub fn identity() -> Self {
-        return Self::new(T::real_zero(), T::real_zero(), T::real_zero(), T::real_one());
+        return Self::new(T::ZERO, T::ZERO, T::ZERO, T::ONE);
     }
 }
 

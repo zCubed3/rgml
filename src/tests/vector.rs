@@ -8,7 +8,7 @@ mod vector2f32 {
         let original = Vector2F32::new(2.0, 2.0);
         let norm = original.normalize();
 
-        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_eq!(norm.magnitude().rl_round(), 1.0);
         assert_ne!(norm, original);
     }
 
@@ -92,7 +92,7 @@ mod vector2f64 {
         let original = Vector2F64::new(2.0, 2.0);
         let norm = original.normalize();
 
-        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_eq!(norm.magnitude().rl_round(), 1.0);
         assert_ne!(norm, original);
     }
 
@@ -176,7 +176,7 @@ mod vector3f32 {
         let original = Vector3F32::new(2.0, 2.0, 2.0);
         let norm = original.normalize();
 
-        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_eq!(norm.magnitude().rl_round(), 1.0);
         assert_ne!(norm, original);
     }
 
@@ -260,7 +260,7 @@ mod vector3f64 {
         let original = Vector3F64::new(2.0, 2.0, 2.0);
         let norm = original.normalize();
 
-        assert_eq!(norm.magnitude().real_round(), 1.0);
+        assert_eq!(norm.magnitude().rl_round(), 1.0);
         assert_ne!(norm, original);
     }
 

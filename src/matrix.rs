@@ -51,7 +51,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Matrix<T, WIDTH, HE
                 break;
             }
 
-            array[c][c] = T::real_one();
+            array[c][c] = T::ONE;
         }
 
         return Self { backing: array };
@@ -132,7 +132,7 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Default for Matrix<
 //
 // Math
 //
-macro_rules! real_op_assign {
+macro_rules! rl_op_assign {
     ($op:ident, $func:ident, $call:tt) => {
         impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> $op<T> for Matrix<T, WIDTH, HEIGHT> {
             fn $func(&mut self, rhs: T) {
@@ -146,7 +146,7 @@ macro_rules! real_op_assign {
     };
 }
 
-macro_rules! real_op {
+macro_rules! rl_op {
     ($op:ident, $func:ident, $call:tt) => {
         impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> $op<T> for Matrix<T, WIDTH, HEIGHT> {
             type Output = Self;
@@ -166,15 +166,15 @@ macro_rules! real_op {
     };
 }
 
-real_op_assign!(AddAssign, add_assign, +=);
-real_op_assign!(SubAssign, sub_assign, -=);
-real_op_assign!(MulAssign, mul_assign, *=);
-real_op_assign!(DivAssign, div_assign, /=);
+rl_op_assign!(AddAssign, add_assign, +=);
+rl_op_assign!(SubAssign, sub_assign, -=);
+rl_op_assign!(MulAssign, mul_assign, *=);
+rl_op_assign!(DivAssign, div_assign, /=);
 
-real_op!(Add, add, +=);
-real_op!(Sub, sub, -=);
-real_op!(Mul, mul, *=);
-real_op!(Div, div, /=);
+rl_op!(Add, add, +=);
+rl_op!(Sub, sub, -=);
+rl_op!(Mul, mul, *=);
+rl_op!(Div, div, /=);
 
 // Matrix * Matrix
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Mul<Self> for Matrix<T, WIDTH, HEIGHT> {
@@ -213,7 +213,7 @@ impl<T: RealNumber> Matrix<T, 2, 2> {
     /// Returns the inverse of this [Matrix<T, 2, 2>]
     pub fn inverse(&self) -> Self {
         let mut i = Self::default();
-        let d = T::real_one() / self.determinant();
+        let d = T::ONE / self.determinant();
 
         i[0][0] = self[1][1];
         i[0][1] = -self[0][1];
@@ -237,7 +237,7 @@ impl<T: RealNumber> Matrix<T, 3, 3> {
     /// Returns the inverse of this [Matrix<T, 3, 3>]
     pub fn inverse(&self) -> Self {
         let mut i = Self::default();
-        let d = T::real_one() / self.determinant();
+        let d = T::ONE / self.determinant();
 
         i[0][0] = (self[1][1] * self[2][2] - self[2][1] * self[1][2]) * d;
         i[1][0] = -(self[1][0] * self[2][2] - self[2][0] * self[1][2]) * d;
@@ -297,7 +297,7 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
         let inv2 = (vec0 * fac1 - vec1 * fac3 + vec3 * fac5);
         let inv3 = (vec0 * fac2 - vec1 * fac4 + vec2 * fac5);
 
-        let one = T::real_one();
+        let one = T::ONE;
 
         let sign_a = Vector::<T, 4>::new(one, -one, one, -one);
         let sign_b = -sign_a;
@@ -315,11 +315,11 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
 
     /// Constructs a perspective projection matrix
     pub fn perspective(fov_y: T, aspect: T, z_near: T, z_far: T) -> Self {
-        let one = T::real_one();
+        let one = T::ONE;
         let two = one + one;
 
-        let vertical_fov = (fov_y / two).real_to_radians();
-        let half_fov = vertical_fov.real_tan();
+        let vertical_fov = (fov_y / two).rl_to_radians();
+        let half_fov = vertical_fov.rl_tan();
 
         let mut m = Self::default();
 
@@ -347,8 +347,8 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
     pub fn rotate_x(rotation: T) -> Self {
         let mut m = Self::identity();
 
-        m[1] = [T::default(), rotation.real_cos(), -rotation.real_sin(), T::default()];
-        m[2] = [T::default(), rotation.real_sin(), rotation.real_cos(), T::default()];
+        m[1] = [T::default(), rotation.rl_cos(), -rotation.rl_sin(), T::default()];
+        m[2] = [T::default(), rotation.rl_sin(), rotation.rl_cos(), T::default()];
 
         return m;
     }
@@ -357,8 +357,8 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
     pub fn rotate_y(rotation: T) -> Self {
         let mut m = Self::identity();
 
-        m[0] = [rotation.real_cos(), T::default(), rotation.real_sin(), T::default()];
-        m[2] = [-rotation.real_sin(), T::default(), rotation.real_cos(), T::default()];
+        m[0] = [rotation.rl_cos(), T::default(), rotation.rl_sin(), T::default()];
+        m[2] = [-rotation.rl_sin(), T::default(), rotation.rl_cos(), T::default()];
 
         return m;
     }
@@ -367,21 +367,21 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
     pub fn rotate_z(rotation: T) -> Self {
         let mut m = Self::identity();
 
-        m[0] = [rotation.real_cos(), -rotation.real_sin(), T::default(), T::default()];
-        m[1] = [rotation.real_sin(), rotation.real_cos(), T::default(), T::default()];
+        m[0] = [rotation.rl_cos(), -rotation.rl_sin(), T::default(), T::default()];
+        m[1] = [rotation.rl_sin(), rotation.rl_cos(), T::default(), T::default()];
 
         return m;
     }
 
     /// Constructs a rotation matrix
     pub fn rotation(euler: Vector<T, 3>) -> Self {
-        let euler_rad = euler * T::real_deg_to_rad();
+        let euler_rad = euler * T::DEG2RAD;
         Self::rotate_z(euler_rad[2]) * Self::rotate_y(euler_rad[1]) * Self::rotate_x(euler_rad[0])
     }
 
     /// Constructs a look at view matrix
     pub fn look_at(direction: Vector<T, 3>) -> Self {
-        let up = Vector::<T, 3>::new(T::default(), -T::real_one(), T::default());
+        let up = Vector::<T, 3>::new(T::default(), -T::ONE, T::default());
 
         let r_right = direction.cross(up).normalize();
         let r_up = direction.cross(r_right).normalize();
