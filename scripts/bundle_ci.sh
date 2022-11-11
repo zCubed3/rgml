@@ -15,7 +15,7 @@ mv "target/debug/${CI_PFIX}rgml.${CI_DLIB}" ci_build/c/debug
 mv "target/debug/${CI_PFIX}rgml.${CI_SLIB}" ci_build/c/debug
 mv "target/release/${CI_PFIX}rgml.${CI_DLIB}" ci_build/c/release
 mv "target/release/${CI_PFIX}rgml.${CI_SLIB}" ci_build/c/release
-mv bindings/prism_math.h ci_build/c
+mv bindings/rgml.h ci_build/c
 
 mkdir ci_build/dotnet
 mkdir ci_build/dotnet/release
