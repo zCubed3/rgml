@@ -46,6 +46,9 @@ Sized + Clone + Copy + Default + Display + RealDataBounds // Usability
     /// Exponential result of this [RealNumber]
     fn rl_exp(&self) -> Self;
 
+    // Log10 result of this [RealNumber]
+    fn rl_log10(&self) -> Self;
+
     /// Absolute value of this [RealNumber]
     fn rl_abs(&self) -> Self;
 
@@ -187,6 +190,10 @@ impl RealNumber for f32 {
         return self.exp();
     }
 
+    fn rl_log10(&self) -> Self {
+        return self.log10();
+    }
+
     fn rl_abs(&self) -> Self {
         self.abs()
     }
@@ -276,6 +283,10 @@ impl RealNumber for f64 {
 
     fn rl_exp(&self) -> Self {
         return self.exp();
+    }
+
+    fn rl_log10(&self) -> Self {
+        return self.log10();
     }
 
     fn rl_abs(&self) -> Self {
