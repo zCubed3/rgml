@@ -40,8 +40,8 @@ Sized + Clone + Copy + Default + Display + RealDataBounds // Usability
     fn rl_acos(&self) -> Self;
     /// Inverse tangent result of this [RealNumber]
     fn rl_atan(&self) -> Self;
-    /// Atan2 result of this [RealNumber] and Y
-    fn rl_atan2(&self, y: Self) -> Self;
+    /// Atan2 result of this [RealNumber] and X
+    fn rl_atan2(&self, x: Self) -> Self;
 
     /// Exponential result of this [RealNumber]
     fn rl_exp(&self) -> Self;
@@ -53,13 +53,15 @@ Sized + Clone + Copy + Default + Display + RealDataBounds // Usability
     fn rl_abs(&self) -> Self;
 
     /// Returns the smallest [RealNumber] between self and min
-    fn rl_min(&self, min: Self) -> Self;
+    fn rl_min(&self, other: Self) -> Self;
     /// Returns the largest [RealNumber] between self and max
-    fn rl_max(&self, max: Self) -> Self;
+    fn rl_max(&self, other: Self) -> Self;
     /// Returns this [RealNumber] clamped between a minimum and maximum
     fn rl_clamp(&self, min: Self, max: Self) -> Self;
     /// Returns this [RealNumber] clamped between 0 and 1
-    fn rl_saturate(&self) -> Self;
+    fn rl_saturate(&self) -> Self {
+        return self.rl_clamp(Self::ZERO, Self::ONE);
+    }
 
     /// Alias to [RealNumber::rl_saturate()]
     fn rl_clamp01(&self) -> Self {
@@ -182,8 +184,8 @@ impl RealNumber for f32 {
         return self.atan();
     }
 
-    fn rl_atan2(&self, y: Self) -> Self {
-        return self.atan2(y);
+    fn rl_atan2(&self, x: Self) -> Self {
+        return self.atan2(x);
     }
 
     fn rl_exp(&self) -> Self {
@@ -198,20 +200,16 @@ impl RealNumber for f32 {
         self.abs()
     }
 
-    fn rl_min(&self, min: Self) -> Self {
-        return self.min(min);
+    fn rl_min(&self, other: Self) -> Self {
+        return self.min(other);
     }
 
-    fn rl_max(&self, max: Self) -> Self {
-        return self.max(max);
+    fn rl_max(&self, other: Self) -> Self {
+        return self.max(other);
     }
 
     fn rl_clamp(&self, min: Self, max: Self) -> Self {
         return self.clamp(min, max);
-    }
-
-    fn rl_saturate(&self) -> Self {
-        return self.min(1.0).max(0.0);
     }
 
     fn rl_floor(&self) -> Self {
@@ -277,8 +275,8 @@ impl RealNumber for f64 {
         return self.atan();
     }
 
-    fn rl_atan2(&self, y: Self) -> Self {
-        return self.atan2(y);
+    fn rl_atan2(&self, x: Self) -> Self {
+        return self.atan2(x);
     }
 
     fn rl_exp(&self) -> Self {
@@ -293,20 +291,16 @@ impl RealNumber for f64 {
         self.abs()
     }
 
-    fn rl_min(&self, min: Self) -> Self {
-        return self.min(min);
+    fn rl_min(&self, other: Self) -> Self {
+        return self.min(other);
     }
 
-    fn rl_max(&self, max: Self) -> Self {
-        return self.max(max);
+    fn rl_max(&self, other: Self) -> Self {
+        return self.max(other);
     }
 
     fn rl_clamp(&self, min: Self, max: Self) -> Self {
         return self.clamp(min, max);
-    }
-
-    fn rl_saturate(&self) -> Self {
-        return self.min(1.0).max(0.0);
     }
 
     fn rl_floor(&self) -> Self {
