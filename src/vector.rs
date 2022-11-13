@@ -92,6 +92,17 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
         return a;
     }
 
+    /// Returns the interpolated value of this to another [Vector] by another [Vector]
+    pub fn vlerp(&self, to: Self, alpha: Self) -> Self {
+        let mut a = *self;
+
+        for c in 0..COUNT {
+            a[c] = self[c].rl_lerp(to[c], alpha[c])
+        }
+
+        return a;
+    }
+
     /// Returns the step function of this vector
     /// Refer to [GLSL specs](https://registry.khronos.org/OpenGL-Refpages/gl4/html/step.xhtml)
     pub fn step(&self, rhs: Self) -> Self {
