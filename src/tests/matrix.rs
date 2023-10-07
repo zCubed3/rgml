@@ -1,5 +1,3 @@
 #![allow(unused)]
 
-mod matrix2x2 {
-
-}
+mod matrix2x2 {}

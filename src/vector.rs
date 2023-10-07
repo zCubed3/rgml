@@ -3,20 +3,20 @@
 
 use std::cmp::*;
 use std::fmt::*;
-use std::ops::*;
 use std::iter::*;
+use std::ops::*;
 
 use crate::real::RealNumber;
 
-#[cfg(feature="swizzle")]
-#[cfg_attr(feature="swizzle", doc(hidden))]
+#[cfg(feature = "swizzle")]
+#[cfg_attr(feature = "swizzle", doc(hidden))]
 pub mod swizzle;
 
-#[cfg(feature="swizzle")]
-#[cfg_attr(feature="swizzle", doc(hidden))]
+#[cfg(feature = "swizzle")]
+#[cfg_attr(feature = "swizzle", doc(hidden))]
 pub use swizzle::*;
 
-#[cfg(feature="serialization")]
+#[cfg(feature = "serialization")]
 use serde::Serialize;
 
 ///
@@ -24,12 +24,12 @@ use serde::Serialize;
 ///
 /// At an underlying level a [Vector] is an equivalent to using `[T; C]`
 ///
-#[cfg_attr(feature="serialization", derive(Serialize))]
+#[cfg_attr(feature = "serialization", derive(Serialize))]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Vector<T: RealNumber, const COUNT: usize> {
     /// The underlying array of the vector, dereferencing [Vector] returns this
-    #[cfg_attr(feature="serialization", serde(with = "serde_arrays"))]
+    #[cfg_attr(feature = "serialization", serde(with = "serde_arrays"))]
     pub backing: [T; COUNT],
 }
 
@@ -41,7 +41,9 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 
     /// Creates a new [Vector] by copying the provided value into each element
     pub fn from_scalar(value: T) -> Self {
-        Vector { backing: [value; COUNT] }
+        Vector {
+            backing: [value; COUNT],
+        }
     }
 
     /// Returns the sum of all components within this [Vector]
@@ -143,7 +145,9 @@ impl<T: RealNumber, const COUNT: usize> Vector<T, COUNT> {
 //
 impl<T: RealNumber, const COUNT: usize> Default for Vector<T, COUNT> {
     fn default() -> Self {
-        Self { backing: [T::default(); COUNT] }
+        Self {
+            backing: [T::default(); COUNT],
+        }
     }
 }
 
@@ -170,7 +174,8 @@ impl<T: RealNumber, const COUNT: usize> DerefMut for Vector<T, COUNT> {
 //
 impl<T: RealNumber, const COUNT: usize> Debug for Vector<T, COUNT> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Vector<{}, {}> {{\n", std::any::type_name::<T>(), COUNT).expect("Failed to write!");
+        write!(f, "Vector<{}, {}> {{\n", std::any::type_name::<T>(), COUNT)
+            .expect("Failed to write!");
 
         for c in 0..COUNT {
             writeln!(f, "\t[{}] = {}", c, self[c]).expect("Failed to write!");
@@ -249,7 +254,6 @@ vector_per_comp_func!(sin, =, rl_sin);
 vector_per_comp_func!(cos, =, rl_cos);
 vector_per_comp_func!(tan, =, rl_tan);
 
-
 //
 // Real Math Traits
 //
@@ -320,8 +324,6 @@ rl_by_vector_op!(Add, add, +=, f64);
 rl_by_vector_op!(Sub, sub, -=, f64);
 rl_by_vector_op!(Mul, mul, *=, f64);
 rl_by_vector_op!(Div, div, /=, f64);
-
-
 
 //
 // Vector math traits
@@ -458,7 +460,7 @@ macro_rules! vector_from_vector {
             fn from(rhs: Vector<T, $from_count>) -> Self {
                 let mut o = Vector::<T, $into_count>::default();
 
-                for c in 0 .. min($into_count, $from_count) {
+                for c in 0..min($into_count, $from_count) {
                     o[c] = rhs[c];
                 }
 
@@ -496,7 +498,7 @@ impl<T: RealNumber> Vector<T, 3> {
         Self::from_array([
             self[1] * rhs[2] - self[2] * rhs[1],
             self[2] * rhs[0] - self[0] * rhs[2],
-            self[0] * rhs[1] - self[1] * rhs[0]
+            self[0] * rhs[1] - self[1] * rhs[0],
         ])
     }
 
@@ -531,11 +533,10 @@ impl<T: RealNumber> Vector<T, 4> {
     }
 }
 
-
 /// Contains commonly used [Vector] aliases with additional implementations for ease of use
 pub mod common {
-    use crate::real::Real;
     use super::*;
+    use crate::real::Real;
 
     /// [Vector<T, 2>] backed by [Real]
     pub type Vector2 = Vector<Real, 2>;

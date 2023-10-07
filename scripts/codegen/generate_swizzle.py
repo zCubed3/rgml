@@ -20,6 +20,7 @@ macro_rules! vector_swizzle_single {
     ($count:literal, $index:literal, $c:ident) => {
         impl<T: RealNumber> Vector<T, $count> {
             #[doc(hidden)]
+            #[inline(always)]
             pub fn $c(&self) -> T {
                 return self[$index];
             }
@@ -31,6 +32,7 @@ macro_rules! vector_swizzle_double {
     ($count:literal, $index:literal, $index2:literal, $cc:ident) => {
         impl<T: RealNumber> Vector<T, $count> {
             #[doc(hidden)]
+            #[inline(always)]
             pub fn $cc(&self) -> Vector<T, 2> {
                 return Vector::<T, 2>::new(self[$index], self[$index2]);
             }
@@ -42,6 +44,7 @@ macro_rules! vector_swizzle_triple {
     ($count:literal, $index:literal, $index2:literal, $index3:literal, $ccc:ident) => {
         impl<T: RealNumber> Vector<T, $count> {
             #[doc(hidden)]
+            #[inline(always)]
             pub fn $ccc(&self) -> Vector<T, 3> {
                 return Vector::<T, 3>::new(self[$index], self[$index2], self[$index3]);
             }
@@ -53,6 +56,7 @@ macro_rules! vector_swizzle_quadruple {
     ($count:literal, $index:literal, $index2:literal, $index3:literal, $index4:literal, $cccc:ident) => {
         impl<T: RealNumber> Vector<T, $count> {
             #[doc(hidden)]
+            #[inline(always)]
             pub fn $cccc(&self) -> Vector<T, 4> {
                 return Vector::<T, 4>::new(self[$index], self[$index2], self[$index3], self[$index4]);
             }

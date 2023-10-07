@@ -59,11 +59,14 @@ mod vector2f32 {
 
     #[test]
     fn test_v2_from_array() {
-        assert_eq!(Vector2F32::new(2.0, 1.0), Vector2F32::from_array([2.0, 1.0]));
+        assert_eq!(
+            Vector2F32::new(2.0, 1.0),
+            Vector2F32::from_array([2.0, 1.0])
+        );
     }
 
     #[test]
-    #[cfg(feature="swizzle")]
+    #[cfg(feature = "swizzle")]
     fn test_v2_swizzle() {
         let t = Vector2F32::new(1.0, 2.0);
 
@@ -143,11 +146,14 @@ mod vector2f64 {
 
     #[test]
     fn test_v2_from_array() {
-        assert_eq!(Vector2F64::new(2.0, 1.0), Vector2F64::from_array([2.0, 1.0]));
+        assert_eq!(
+            Vector2F64::new(2.0, 1.0),
+            Vector2F64::from_array([2.0, 1.0])
+        );
     }
 
     #[test]
-    #[cfg(feature="swizzle")]
+    #[cfg(feature = "swizzle")]
     fn test_v2_swizzle() {
         let t = Vector2F64::new(1.0, 2.0);
 
@@ -227,11 +233,14 @@ mod vector3f32 {
 
     #[test]
     fn test_v3_from_array() {
-        assert_eq!(Vector3F32::new(2.0, 1.0, 0.0), Vector3F32::from_array([2.0, 1.0, 0.0]));
+        assert_eq!(
+            Vector3F32::new(2.0, 1.0, 0.0),
+            Vector3F32::from_array([2.0, 1.0, 0.0])
+        );
     }
 
     #[test]
-    #[cfg(feature="swizzle")]
+    #[cfg(feature = "swizzle")]
     fn test_v3_swizzle() {
         let t = Vector3F32::new(1.0, 2.0, 3.0);
 
@@ -311,7 +320,10 @@ mod vector3f64 {
 
     #[test]
     fn test_v3_from_array() {
-        assert_eq!(Vector3F64::new(2.0, 1.0, 0.0), Vector3F64::from_array([2.0, 1.0, 0.0]));
+        assert_eq!(
+            Vector3F64::new(2.0, 1.0, 0.0),
+            Vector3F64::from_array([2.0, 1.0, 0.0])
+        );
     }
 
     #[test]

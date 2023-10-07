@@ -5,8 +5,8 @@ use std::cmp::*;
 use std::fmt::*;
 use std::ops::*;
 
-use crate::vector::Vector;
 use super::real::RealNumber;
+use crate::vector::Vector;
 
 /// A matrix type. Commonly used for 3D graphics and rendering
 ///
@@ -125,7 +125,9 @@ impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Display for Matrix<
 //
 impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Default for Matrix<T, WIDTH, HEIGHT> {
     fn default() -> Self {
-        Self { backing: [[T::default(); WIDTH]; HEIGHT] }
+        Self {
+            backing: [[T::default(); WIDTH]; HEIGHT],
+        }
     }
 }
 
@@ -177,7 +179,9 @@ rl_op!(Mul, mul, *=);
 rl_op!(Div, div, /=);
 
 // Matrix * Matrix
-impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Mul<Self> for Matrix<T, WIDTH, HEIGHT> {
+impl<T: RealNumber, const WIDTH: usize, const HEIGHT: usize> Mul<Self>
+    for Matrix<T, WIDTH, HEIGHT>
+{
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
@@ -228,10 +232,9 @@ impl<T: RealNumber> Matrix<T, 3, 3> {
     #[inline]
     /// Returns the determinant of this [Matrix<T, 3, 3>]
     pub fn determinant(&self) -> T {
-        return
-            self[0][0] * (self[1][1] * self[2][2] - self[2][1] * self[1][2]) -
-            self[1][0] * (self[0][1] * self[2][2] - self[2][1] * self[0][2]) +
-            self[2][0] * (self[0][1] * self[1][2] - self[1][1] * self[0][2]);
+        return self[0][0] * (self[1][1] * self[2][2] - self[2][1] * self[1][2])
+            - self[1][0] * (self[0][1] * self[2][2] - self[2][1] * self[0][2])
+            + self[2][0] * (self[0][1] * self[1][2] - self[1][1] * self[0][2]);
     }
 
     /// Returns the inverse of this [Matrix<T, 3, 3>]
@@ -302,7 +305,8 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
         let sign_a = Vector::<T, 4>::new(one, -one, one, -one);
         let sign_b = -sign_a;
 
-        let mut i = Self::from_vectors([inv0 * sign_a, inv1 * sign_b, inv2 * sign_a, inv3 * sign_b]);
+        let mut i =
+            Self::from_vectors([inv0 * sign_a, inv1 * sign_b, inv2 * sign_a, inv3 * sign_b]);
         let r0 = Vector::<T, 4>::new(i[0][0], i[1][0], i[2][0], i[3][0]);
 
         let dot0 = Vector::from_array(self[0]) * r0;
@@ -347,8 +351,18 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
     pub fn rotate_x(rotation: T) -> Self {
         let mut m = Self::identity();
 
-        m[1] = [T::default(), rotation.rl_cos(), -rotation.rl_sin(), T::default()];
-        m[2] = [T::default(), rotation.rl_sin(), rotation.rl_cos(), T::default()];
+        m[1] = [
+            T::default(),
+            rotation.rl_cos(),
+            -rotation.rl_sin(),
+            T::default(),
+        ];
+        m[2] = [
+            T::default(),
+            rotation.rl_sin(),
+            rotation.rl_cos(),
+            T::default(),
+        ];
 
         return m;
     }
@@ -357,8 +371,18 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
     pub fn rotate_y(rotation: T) -> Self {
         let mut m = Self::identity();
 
-        m[0] = [rotation.rl_cos(), T::default(), rotation.rl_sin(), T::default()];
-        m[2] = [-rotation.rl_sin(), T::default(), rotation.rl_cos(), T::default()];
+        m[0] = [
+            rotation.rl_cos(),
+            T::default(),
+            rotation.rl_sin(),
+            T::default(),
+        ];
+        m[2] = [
+            -rotation.rl_sin(),
+            T::default(),
+            rotation.rl_cos(),
+            T::default(),
+        ];
 
         return m;
     }
@@ -367,8 +391,18 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
     pub fn rotate_z(rotation: T) -> Self {
         let mut m = Self::identity();
 
-        m[0] = [rotation.rl_cos(), -rotation.rl_sin(), T::default(), T::default()];
-        m[1] = [rotation.rl_sin(), rotation.rl_cos(), T::default(), T::default()];
+        m[0] = [
+            rotation.rl_cos(),
+            -rotation.rl_sin(),
+            T::default(),
+            T::default(),
+        ];
+        m[1] = [
+            rotation.rl_sin(),
+            rotation.rl_cos(),
+            T::default(),
+            T::default(),
+        ];
 
         return m;
     }
@@ -399,11 +433,15 @@ impl<T: RealNumber> Matrix<T, 4, 4> {
     pub fn project_point(self, point: Vector<T, 3>) -> Vector<T, 3> {
         let mut reference = Vector::<T, 3>::default();
 
-        reference[0] = point[0] * self[0][0] + point[1] * self[0][0] + point[2] * self[0][2] + self[0][3];
-        reference[1] = point[0] * self[1][0] + point[1] * self[1][0] + point[2] * self[1][2] + self[1][3];
-        reference[2] = point[0] * self[2][0] + point[1] * self[2][0] + point[2] * self[2][2] + self[2][3];
+        reference[0] =
+            point[0] * self[0][0] + point[1] * self[0][0] + point[2] * self[0][2] + self[0][3];
+        reference[1] =
+            point[0] * self[1][0] + point[1] * self[1][0] + point[2] * self[1][2] + self[1][3];
+        reference[2] =
+            point[0] * self[2][0] + point[1] * self[2][0] + point[2] * self[2][2] + self[2][3];
 
-        let w: T = point[0] * self[3][0] + point[1] * self[3][1] + point[2] * self[3][2] + self[3][3];
+        let w: T =
+            point[0] * self[3][0] + point[1] * self[3][1] + point[2] * self[3][2] + self[3][3];
 
         reference[0] /= w;
         reference[1] /= w;
@@ -445,8 +483,8 @@ impl<T: RealNumber> Mul<Matrix<T, 4, 4>> for Vector<T, 4> {
 
 /// Contains commonly used [Matrix] aliases with additional implementations for ease of use
 pub mod common {
-    use crate::real::Real;
     use super::*;
+    use crate::real::Real;
 
     // Default matrix 2x2 types
     /// [Matrix<T, 2, 2>] backed by [Real]

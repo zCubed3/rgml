@@ -1,18 +1,18 @@
+use crate::vector::*;
 use std::cmp::*;
 use std::fmt::*;
 use std::ops::*;
-use crate::vector::*;
 
-#[cfg(feature="serde")]
+#[cfg(feature = "serde")]
 use serde::Serialize;
 
 // https://www.worthe-it.co.za/blog/2017-01-15-aliasing-traits-in-rust.html
 
-#[cfg(feature="serialization")]
+#[cfg(feature = "serialization")]
 /// If serde support is enabled, this requires [Serialize] having been implemented
 pub trait RealDataBounds: Serialize {}
 
-#[cfg(not(feature="serialization"))]
+#[cfg(not(feature = "serialization"))]
 /// If serde support is enabled, this requires [Serialize] having been implemented
 pub trait RealDataBounds {}
 
